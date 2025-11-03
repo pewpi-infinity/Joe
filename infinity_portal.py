@@ -260,7 +260,7 @@ INDEX_HTML = r"""
     }catch(e){ addBubble("Speech recognition not available in this browser.",'bot'); }
   }
   // Upload (shows file name back via chat)
-  function handleFile(ev){ const f=ev.target.files[0]; if(!f) return; addBubble("Got file: "+f.name+" (")+f.size+" bytes). I can parse text files locally.",'bot'); }
+  function handleFile(ev){ const f=ev.target.files[0]; if(!f) return; addBubble("Got file: "+f.name+" ("+f.size+" bytes). I can parse text files locally.",'bot'); }
 
   // --------- Pi Singer ---------
   let ac, master, analyser, scopeTimer, nodes=[];
@@ -345,7 +345,9 @@ INDEX_HTML = r"""
 </script>
 </body>
 </html>
-"""@app.post("/api/chat")
+"""
+
+@app.post("/api/chat")
 def api_chat():
     data = request.get_json(silent=True) or {}
     msg = data.get("message","")
