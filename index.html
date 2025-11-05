@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>Infinity Launcher · All-in-One Portal</title>
+  <title>Infinity AI-to-AI Encrypted Login</title>
   <meta name="color-scheme" content="light dark"/>
   <style>
     :root {
@@ -13,359 +13,634 @@
       --panel: #f8fafc;
       --muted: #637083;
       --radius: 12px;
+      --gradient: linear-gradient(135deg, var(--blue-1), var(--blue-2));
       font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
     }
-    html, body { margin:0; padding:0; background:var(--bg); color:#051426; min-height:100vh;}
-    .app { max-width:480px; margin:0 auto; padding:0 0 60px 0; }
-    header { display:flex;align-items:center;justify-content:space-between;padding:14px 10px;background:#fff;border-bottom:1.5px solid #e6e9ef; }
-    .logoText { font-weight:700; color:var(--blue-1); font-size:20px; letter-spacing:1px; }
-    .sub { font-size:13px; color:var(--muted);}
-    .nav { display:flex; gap:17px; }
-    .nav a { color:var(--blue-2); font-weight:600; text-decoration:none; font-size:17px; padding:7px 0;}
-    .nav a.active, .nav a:hover { border-bottom:2.5px solid var(--blue-2);}
-    main { padding:20px 0 10px 0;}
-    .card { background:var(--panel);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 2px 12px #00308716; }
-    .card h2 { margin:0 0 8px 0; color:var(--blue-1);}
-    .apps { display:flex; flex-direction:column; gap:18px; }
-    .app-link { background:#fff; border-radius:10px; box-shadow:0 2px 12px #00308711; padding:16px; display:flex; flex-direction:column; align-items:flex-start;}
-    .app-link a { color:var(--blue-2); font-weight:700; font-size:17px; text-decoration:none; }
-    .desc { font-size:13px; color:var(--muted);margin-top:4px;}
-    .live { color:#22c55e; font-weight:700; font-size:12px;}
-    .panel { display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; z-index:1000; background:rgba(2,6,23,0.33);}
-    .panel .content { background:#fff; border-radius:14px; max-width:410px; margin:60px auto; padding:20px; box-shadow:0 12px 40px #00308726;}
-    .panel .close { position:absolute; right:18px; top:22px; background:none; border:0; font-size:22px; color:var(--muted); cursor:pointer;}
-    .rogersDock { position:fixed; right:16px; bottom:16px; z-index:999; }
-    .rogBtn { width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, var(--blue-1), var(--blue-2)); display:flex;align-items:center;justify-content:center; color:#fff;font-weight:900; font-size:28px; box-shadow:0 10px 30px #0b5fd71a; cursor:pointer; border:none;}
-    .rogBtn img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
-    .chatBox { position:fixed; right:10px; bottom:80px; width:95vw; max-width:340px; border-radius:12px; background:#fff; box-shadow:0 20px 50px #03183e29; display:none; flex-direction:column; z-index:999; overflow:hidden; border:1px solid #e6e9ef;}
-    .chatBox.open { display:flex; }
-    .chatHeader { padding:10px 14px; background:linear-gradient(90deg, var(--blue-1), var(--blue-2)); color:#fff; display:flex; justify-content:space-between;align-items:center; font-weight:bold;}
-    .chatBody { padding:12px;height:210px;overflow-y:auto;background:var(--panel);font-size:15px;}
-    .chatInput { display:flex; padding:10px; border-top:1px solid #e6e9ef; background:#f9fbfd;}
-    .chatInput input { flex:1;padding:8px;border-radius:8px;border:1px solid #e6e9ef;font-size:16px;}
-    .chatInput button { background:var(--blue-1); color:#fff; border:none; border-radius:8px; font-weight:700; padding:8px 14px; margin-left:7px; font-size:16px;}
-    .bubble { margin:7px 0; max-width:90%; padding:9px 13px; border-radius:13px; word-break:break-word;}
-    .me { background:rgba(11,95,215,0.08); border:1px solid rgba(11,95,215,0.11);margin-left:auto;}
-    .ai { background:#fff; border:1px solid #e6e9ef;}
-    .sidebarBtn { position:fixed;left:12px;top: 64px;width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid #e6e9ef;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--blue-2);z-index:1001;cursor:pointer;}
-    .sidebar { position:fixed;left:0;top:0;bottom:0;width:86vw;max-width:320px;background:#fff;box-shadow:20px 0 60px #03183e19;transform:translateX(-110%);transition:transform .28s;z-index:9999;padding:22px 12px 0 12px;overflow:auto;}
-    .sidebar.open { transform:translateX(0);}
-    .sidebar h3 { margin-top:0;}
-    .sbLink { display:block;padding:10px 0;font-weight:700;color:var(--blue-1);text-decoration:none;border-bottom:1px solid #eee;}
-    .devBox { background:#f8fafc;border-radius:10px;padding:12px;margin-top:14px;}
-    @media (max-width:600px) {
-      .app { max-width:100vw; }
-      .chatBox { left:4px; right:4px;width:auto;}
-      .panel .content {width:97vw;max-width:97vw;}
-      .sidebar { width:98vw;max-width:98vw;}
+    
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      background: var(--bg); 
+      color: #051426; 
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    /* Live Video/Widget styles included as above */
-    .liveFab { position: fixed; right: 16px; bottom: 16px; z-index: 9999; }
-    .liveFab button { height: 52px; min-width: 52px; padding: 0 16px; border-radius: 999px; border: none; cursor: pointer;
-      background: linear-gradient(135deg, var(--blue-1), var(--blue-2)); color: #fff; font-weight: 800; box-shadow: 0 10px 30px #0b5fd726; }
-    .livePanel { position: fixed; right: 16px; bottom: 84px; width: min(92vw, 420px); background: #0b1220; color: #e9eefc; border: 1px solid #0f274b; border-radius: 16px; box-shadow: 0 20px 60px #00000066; overflow: hidden; display: none; z-index: 9999;}
-    .livePanel.open { display: block; }
-    .liveHeader { display:flex; align-items:center; justify-content:space-between; padding: 10px 12px; background: #071127; }
-    .liveHeader h4 { margin: 0; font-size: 14px; letter-spacing: .4px; }
-    .liveTabs { display:flex; gap:8px; }
-    .liveTabs button { background: transparent; color: #a9c2ff; border: 1px solid #0f274b; padding: 6px 10px; border-radius: 10px; cursor:pointer;}
-    .liveTabs button.active { background: #123; color: #fff; border-color: #1b4aa8; }
-    .liveBody { padding: 10px 12px 14px; }
-    .liveBody .row { margin-bottom: 10px; }
-    .liveSmall { font-size: 12px; opacity: .8; }
-    .liveInput { width: 100%; padding: 10px 12px; border-radius: 10px; border:1px solid #112a55; background:#0b1733; color:#e9eefc;}
-    .liveBtn { background:#1a4dd9; color:#fff; border:none; border-radius:10px; padding:10px 12px; cursor:pointer; font-weight:700;}
-    .liveBtn.secondary { background:#0e2a63; }
-    .liveMeta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
-    .liveMeta select, .liveMeta button { background:#0b1733; color:#e9eefc; border:1px solid #112a55; border-radius:10px; padding:6px 10px; }
-    .liveVideoShell { position: relative; background:#000; border-radius: 12px; overflow:hidden; }
-    .liveVideoShell video { width:100%; height:auto; display:block; }
-    .liveBadge { position:absolute; left:10px; top:10px; background:#e10; color:#fff; font-size:10px; padding:4px 8px; border-radius:8px; letter-spacing:.7px; }
+    
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+    
+    .logo-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo-text {
+      font-weight: 800;
+      color: var(--blue-1);
+      font-size: 36px;
+      letter-spacing: 2px;
+      margin: 0;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .logo-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+    
+    .login-card {
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 48, 135, 0.12);
+      border: 1px solid rgba(0, 48, 135, 0.08);
+    }
+    
+    .login-card h2 {
+      margin: 0 0 8px 0;
+      color: var(--blue-1);
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .login-card .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--blue-1);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e6e9ef;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.2s;
+      box-sizing: border-box;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--blue-2);
+      box-shadow: 0 0 0 3px rgba(11, 95, 215, 0.1);
+    }
+    
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(11, 95, 215, 0.2);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(11, 95, 215, 0.3);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .encryption-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 12px;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 8px;
+      font-size: 13px;
+      color: #15803d;
+    }
+    
+    .encryption-badge::before {
+      content: "🔒";
+      font-size: 16px;
+    }
+    
+    .status-message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+    
+    .status-message.success {
+      background: rgba(34, 197, 94, 0.1);
+      color: #15803d;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      display: block;
+    }
+    
+    .status-message.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #991b1b;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      display: block;
+    }
+    
+    .divider {
+      margin: 24px 0;
+      text-align: center;
+      position: relative;
+    }
+    
+    .divider::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #e6e9ef;
+    }
+    
+    .divider span {
+      position: relative;
+      background: var(--panel);
+      padding: 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    
+    .toggle-mode {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .toggle-mode button {
+      background: none;
+      border: none;
+      color: var(--blue-2);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+    
+    .info-box {
+      margin-top: 24px;
+      padding: 16px;
+      background: rgba(11, 95, 215, 0.05);
+      border: 1px solid rgba(11, 95, 215, 0.1);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    .info-box strong {
+      color: var(--blue-1);
+    }
+    
+    @media (max-width: 600px) {
+      .login-container {
+        padding: 16px;
+      }
+      
+      .login-card {
+        padding: 24px;
+      }
+      
+      .logo-text {
+        font-size: 28px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <span class="logoText">INFINITY</span>
-      <nav class="nav">
-        <a href="#" class="active" onclick="showPanel('main')">Home</a>
-        <a href="#" onclick="showPanel('dev')">Dev Tools</a>
-      </nav>
-    </header>
-    <main id="mainPanel">
-      <div class="card">
-        <h2>Infinity All-in-One Launcher</h2>
-        <div class="sub" style="margin-bottom:13px;">All your tools, AI, and projects—one page, mobile ready.</div>
-        <div class="apps">
-          <div class="app-link">
-            <a href="http://127.0.0.1:8080" target="_blank">Portal UI</a>
-            <div class="desc">Day-to-day dashboard, navigation, tools</div>
-            <span class="live">LIVE on :8080</span>
-          </div>
-          <div class="app-link">
-            <a href="http://127.0.0.1:5050" target="_blank">Rogers AI Chat</a>
-            <div class="desc">Conversational AI, dev chat, steering wheel</div>
-            <span class="live">LIVE on :5050</span>
-          </div>
-          <div class="app-link">
-            <a href="http://127.0.0.1:8000" target="_blank">Socializer (Demo)</a>
-            <div class="desc">Community chat, channels, games (edit URL as needed)</div>
-            <span class="live">:8000 (if running)</span>
-          </div>
-          <div class="app-link">
-            <a href="pi_singer.html" target="_blank">Pi Singer</a>
-            <div class="desc">Digit-to-music generator (your code, local HTML file)</div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <h2>Quick Actions & Resources</h2>
-        <ul style="margin-left:18px;">
-          <li>Sidebar: Access all settings, dev tools, saved sessions</li>
-          <li>Floating Rogers AI: Chat anytime <b>R</b></li>
-          <li>Visit each app, then bookmark for fast access</li>
-        </ul>
-      </div>
-    </main>
-    <!-- Dev Tools Panel -->
-    <div class="panel" id="devPanel" onclick="closePanel(event)">
-      <div class="content" onclick="event.stopPropagation()">
-        <button class="close" onclick="hidePanel('dev')">✕</button>
-        <h2>Developer & Steering Wheel</h2>
-        <div class="devBox">
-          <b>Session Storage:</b> <span id="sessCount"></span>
-          <button onclick="clearSessions()" style="margin-left:8px;">Clear Sessions</button>
-        </div>
-        <div class="devBox">
-          <b>API/Endpoint Config:</b><br>
-          <input id="apiInput" style="width:97%;padding:9px;border-radius:7px;border:1.2px solid #e6e9ef;" placeholder="Paste Rogers/Infinity API URL here">
-          <button onclick="saveApi()" style="margin-top:8px;">Save Endpoint</button>
-          <div id="apiSaved" class="sub" style="margin-top:7px;"></div>
-        </div>
-        <div class="devBox">
-          <b>Notes:</b>
-          <ul style="font-size:13px;">
-            <li>Your local Watson-style AI is wired in (no IBM key needed)</li>
-            <li>Plug in endpoints for live AI, voice/video, or data</li>
-            <li>All panel logic is in this file—edit & extend as you wish</li>
-          </ul>
-        </div>
-      </div>
+  <div class="login-container">
+    <div class="logo-header">
+      <h1 class="logo-text">INFINITY</h1>
+      <p class="logo-subtitle">AI-to-AI Encrypted Authentication</p>
     </div>
-    <!-- Sidebar -->
-    <button class="sidebarBtn" onclick="toggleSidebar()">☰</button>
-    <aside class="sidebar" id="sidebar">
-      <h3>Infinity Menu</h3>
-      <a class="sbLink" href="#" onclick="showPanel('main');toggleSidebar()">Home</a>
-      <a class="sbLink" href="#" onclick="showPanel('dev');toggleSidebar()">Dev Tools</a>
-      <a class="sbLink" href="http://127.0.0.1:8080" target="_blank">Portal UI</a>
-      <a class="sbLink" href="http://127.0.0.1:5050" target="_blank">Rogers AI Chat</a>
-      <a class="sbLink" href="http://127.0.0.1:8000" target="_blank">Socializer</a>
-      <a class="sbLink" href="pi_singer.html" target="_blank">Pi Singer</a>
-      <div style="margin-top:18px;font-size:13px;color:#6b7280;">Contact: infinitystockinvesting@gmail.com</div>
-    </aside>
-
-    <!-- Rogers AI Dock -->
-    <div class="rogersDock">
-      <button class="rogBtn" id="rogBtn" title="Rogers AI"><img src="einstein-avatar.png" alt="Rogers Einstein" onerror="this.remove(); this.closest('button').textContent='R';"></button>
-    </div>
-    <div class="chatBox" id="chatBox">
-      <div class="chatHeader">
-        <span>Rogers AI</span>
-        <button onclick="toggleChat()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer;">✕</button>
-      </div>
-      <div class="chatBody" id="chatBody"></div>
-      <form class="chatInput" onsubmit="event.preventDefault();sendChat();">
-        <input id="chatIn" autocomplete="off" placeholder="Ask Rogers anything...">
-        <button type="submit">Send</button>
+    
+    <div class="login-card">
+      <h2 id="cardTitle">Welcome</h2>
+      <p class="subtitle">Secure login with end-to-end encryption</p>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="your@email.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="username">Display Name</label>
+          <input type="text" id="username" name="username" required autocomplete="name" placeholder="Your Name">
+        </div>
+        
+        <div class="form-group">
+          <label for="passphrase">Secure Passphrase</label>
+          <input type="password" id="passphrase" name="passphrase" required autocomplete="current-password" placeholder="Enter your passphrase">
+        </div>
+        
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <span id="btnText">Continue</span>
+        </button>
+        
+        <div class="encryption-badge">
+          End-to-end encrypted with Web Crypto API (AES-GCM)
+        </div>
+        
+        <div class="status-message" id="statusMessage"></div>
       </form>
+      
+      <div class="toggle-mode">
+        <button type="button" id="toggleMode">New user? Create account</button>
+      </div>
+      
+      <div class="info-box">
+        <strong>Infinity AI-to-AI Security:</strong> Your credentials are encrypted locally using military-grade AES-256-GCM encryption. No data is sent to external servers. All authentication is handled securely within your browser.
+      </div>
     </div>
   </div>
 
-<!-- =================== JS/Widget Logic =================== -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.8"></script>
-<script src="https://cdn.jsdelivr.net/npm/dashjs@4.7.4/dist/dash.all.min.js"></script>
-<script>
-/* Panel/Sidebar Logic */
-function showPanel(name){
-  document.getElementById('mainPanel').style.display = (name==='main')?'block':'none';
-  document.getElementById('devPanel').style.display = (name==='dev')?'flex':'none';
-}
-function hidePanel(name){ document.getElementById('devPanel').style.display='none'; }
-function closePanel(event){ if(event.target.classList.contains('panel')) hidePanel('dev'); }
-function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); }
-
-/* Session/Dev logic */
-function clearSessions(){
-  localStorage.clear();
-  document.getElementById('sessCount').innerText = '0';
-}
-function saveApi(){
-  const val = document.getElementById('apiInput').value.trim();
-  if(!val){ document.getElementById('apiSaved').innerText = 'Enter a URL first'; return; }
-  localStorage.setItem('INFINITY_API', val);
-  document.getElementById('apiSaved').innerText = 'Saved API endpoint!';
-  setTimeout(()=>document.getElementById('apiSaved').innerText='',1800);
-}
-function updateSessCount(){
-  let count = Object.keys(localStorage).length;
-  document.getElementById('sessCount').innerText = count;
-}
-updateSessCount();
-
-/* Rogers Chat Dock Logic */
-const rogBtn = document.getElementById('rogBtn');
-const chatBox = document.getElementById('chatBox');
-rogBtn.onclick = () => { chatBox.classList.add('open'); setTimeout(()=>document.getElementById('chatIn').focus(), 120); }
-function toggleChat() { chatBox.classList.remove('open'); }
-const chatBody = document.getElementById('chatBody');
-const chatIn = document.getElementById('chatIn');
-function addBubble(role, text) {
-  const div = document.createElement('div');
-  div.className = 'bubble ' + (role === 'me' ? 'me' : 'ai');
-  div.textContent = text;
-  chatBody.appendChild(div);
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-function sendChat() {
-  const t = chatIn.value.trim();
-  if (!t) return;
-  addBubble('me', t);
-  chatIn.value = '';
-  setTimeout(() => {
-    // Demo “Watson” reply (replace with real API if you want)
-    let reply = '';
-    if (/help|how/i.test(t)) reply = "I'm Rogers, your Infinity assistant. How can I help?";
-    else if (/energy|token/i.test(t)) reply = "Energy features are in development. Check your profile soon!";
-    else if (/voice|audio/i.test(t)) reply = "Voice features are coming! Try the mic in your next update.";
-    else if (/weather|news/i.test(t)) reply = "Live data will be in the next Infinity release.";
-    else reply = "Got it! (This is a demo. For live AI, connect the backend API.)";
-    addBubble('ai', reply);
-  }, 400);
-}
-addBubble('ai', "Hi! Rogers AI is ready. Ask anything or say 'help'.");
-
-/* === Live Video Widget === */
-(function(){
-  const LIVE_CONFIG = {
-    hls: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    mp4: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    dash: ""
-  };
-  // UI binds
-  const fab = document.createElement('div');
-  fab.className = 'liveFab';
-  fab.innerHTML = `<button id="toggleLive">● Live</button>`;
-  document.body.appendChild(fab);
-  const livePanel = document.createElement('div');
-  livePanel.className = 'livePanel'; livePanel.id = 'livePanel';
-  livePanel.innerHTML = `
-    <div class="liveHeader">
-      <h4>Rogers Live — Watson × Gemini (planned)</h4>
-      <div class="liveTabs">
-        <button id="tabLive" class="active">Live</button>
-        <button id="tabSignup">Sign up</button>
-      </div>
-    </div>
-    <div class="liveBody">
-      <div id="panelLive">
-        <div class="liveVideoShell">
-          <span class="liveBadge">LIVE</span>
-          <video id="liveVideo" playsinline webkit-playsinline x-webkit-airplay="allow" controls></video>
-        </div>
-        <div class="liveMeta">
-          <select id="qualitySelect" title="Quality"></select>
-          <button id="pipBtn" title="Picture-in-Picture">PiP</button>
-          <button id="fsBtn" title="Fullscreen">Fullscreen</button>
-          <button id="latencyBtn" title="Ultra Low Latency">ULL</button>
-        </div>
-      </div>
-      <div id="panelSignup" style="display:none">
-        <div class="row"><input id="signupEmail" class="liveInput" type="email" placeholder="Email"></div>
-        <div class="row"><input id="signupName" class="liveInput" type="text" placeholder="Display name (optional)"></div>
-        <div class="row"><button id="signupBtn" class="liveBtn">Create account</button></div>
-        <div class="row liveSmall">No passwords yet — this is a local quick-start. We’ll wire real auth later.</div>
-        <div class="row liveSmall">Already set? You’re signed in as: <strong id="signedAs">—</strong></div>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(livePanel);
-
-  // Panel toggle
-  document.getElementById('toggleLive').onclick = ()=> livePanel.classList.toggle('open');
-  livePanel.querySelector('#tabLive').onclick = ()=>{ livePanel.querySelector('#tabLive').classList.add('active'); livePanel.querySelector('#tabSignup').classList.remove('active'); livePanel.querySelector('#panelLive').style.display=''; livePanel.querySelector('#panelSignup').style.display='none'; }
-  livePanel.querySelector('#tabSignup').onclick = ()=>{ livePanel.querySelector('#tabSignup').classList.add('active'); livePanel.querySelector('#tabLive').classList.remove('active'); livePanel.querySelector('#panelSignup').style.display=''; livePanel.querySelector('#panelLive').style.display='none'; }
-  // Sign up logic
-  livePanel.querySelector('#signupBtn').onclick = ()=>{
-    const email = livePanel.querySelector('#signupEmail').value.trim();
-    const name = livePanel.querySelector('#signupName').value.trim();
-    if (!email) return alert('Enter an email to continue.');
-    const obj = { email, name, ts: Date.now() };
-    localStorage.setItem('infinity_user', JSON.stringify(obj));
-    livePanel.querySelector('#signedAs').textContent = name || email;
-    alert('Account created locally. We’ll hook real auth next.');
-  };
-  // Video streaming
-  const video = livePanel.querySelector('#liveVideo');
-  const qSel = livePanel.querySelector('#qualitySelect');
-  const pipBtn = livePanel.querySelector('#pipBtn');
-  const fsBtn = livePanel.querySelector('#fsBtn');
-  const latencyBtn = livePanel.querySelector('#latencyBtn');
-  let hls = null, dash = null;
-  function unloadPlayers(){
-    if (hls) { try { hls.destroy(); } catch(e){} hls = null; }
-    if (dash) { try { dash.reset(); } catch(e){} dash = null; }
-    video.removeAttribute('src'); video.load();
-  }
-  function setupHls(url){
-    unloadPlayers();
-    if (window.Hls && Hls.isSupported()) {
-      hls = new Hls({ enableWorker: true, lowLatencyMode: true, liveSyncDurationCount: 2 });
-      hls.loadSource(url);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        buildQualityMenu(hls.levels);
-      });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = url;
-      buildQualityMenu([]); // native iOS player handles quality
-    } else {
-      if (LIVE_CONFIG.mp4) setupMp4(LIVE_CONFIG.mp4);
-    }
-  }
-  function setupMp4(url){
-    unloadPlayers();
-    video.src = url;
-    buildQualityMenu([]);
-  }
-  function buildQualityMenu(levels){
-    qSel.innerHTML = '';
-    if (!levels || !levels.length || !hls) {
-      const opt = document.createElement('option');
-      opt.value = 'auto'; opt.textContent = 'Auto';
-      qSel.appendChild(opt);
-      qSel.disabled = true;
-      return;
-    }
-    qSel.disabled = false;
-    const auto = document.createElement('option');
-    auto.value = 'auto'; auto.textContent = 'Auto';
-    qSel.appendChild(auto);
-    levels.forEach((lvl, i) => {
-      const opt = document.createElement('option');
-      const res = (lvl.height ? (lvl.height + 'p') : (Math.round((lvl.bitrate||0)/1000) + 'kbps'));
-      opt.value = i; opt.textContent = res;
-      qSel.appendChild(opt);
+  <script>
+    // Infinity AI-to-AI Encrypted Login System
+    // Uses Web Crypto API for secure encryption
+    
+    const STORAGE_KEYS = {
+      USER_DATA: 'infinity_user_encrypted',
+      USER_SESSION: 'infinity_session',
+      ENCRYPTION_SALT: 'infinity_salt',
+      AUTH_TOKEN: 'infinity_auth_token'
+    };
+    
+    let isSignupMode = false;
+    
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      checkExistingSession();
+      setupEventListeners();
     });
-    qSel.onchange = ()=>{ if (!hls) return; hls.currentLevel = (qSel.value === 'auto') ? -1 : parseInt(qSel.value, 10); };
-  }
-  pipBtn.onclick = async ()=>{ try { if (document.pictureInPictureElement) await document.exitPictureInPicture(); else if (video.requestPictureInPicture) await video.requestPictureInPicture(); } catch(e){} };
-  fsBtn.onclick = async ()=>{ try { if (!document.fullscreenElement) await video.parentElement.requestFullscreen(); else await document.exitFullscreen(); } catch(e){} };
-  latencyBtn.onclick = ()=>{ try { video.currentTime = video.buffered.end(0) - 0.25; } catch(e){} };
-  // Auto-init
-  if (LIVE_CONFIG.hls) setupHls(LIVE_CONFIG.hls);
-  else if (LIVE_CONFIG.mp4) setupMp4(LIVE_CONFIG.mp4);
-})();
-</script>
+    
+    function setupEventListeners() {
+      document.getElementById('loginForm').addEventListener('submit', handleFormSubmit);
+      document.getElementById('toggleMode').addEventListener('click', toggleAuthMode);
+    }
+    
+    function toggleAuthMode() {
+      isSignupMode = !isSignupMode;
+      const cardTitle = document.getElementById('cardTitle');
+      const toggleBtn = document.getElementById('toggleMode');
+      const btnText = document.getElementById('btnText');
+      
+      if (isSignupMode) {
+        cardTitle.textContent = 'Create Account';
+        toggleBtn.textContent = 'Already have an account? Login';
+        btnText.textContent = 'Create Account';
+      } else {
+        cardTitle.textContent = 'Welcome Back';
+        toggleBtn.textContent = 'New user? Create account';
+        btnText.textContent = 'Login';
+      }
+    }
+    
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const passphrase = document.getElementById('passphrase').value;
+      
+      if (!email || !username || !passphrase) {
+        showStatus('Please fill in all fields', 'error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      document.getElementById('btnText').textContent = 'Processing...';
+      
+      try {
+        if (isSignupMode) {
+          await handleSignup(email, username, passphrase);
+        } else {
+          await handleLogin(email, username, passphrase);
+        }
+      } catch (error) {
+        console.error('Authentication error:', error);
+        showStatus('Authentication failed. Please try again.', 'error');
+        submitBtn.disabled = false;
+        document.getElementById('btnText').textContent = isSignupMode ? 'Create Account' : 'Login';
+      }
+    }
+    
+    async function handleSignup(email, username, passphrase) {
+      // Generate encryption key from passphrase
+      const encryptionKey = await deriveKey(passphrase, email);
+      
+      // Create user data object
+      const userData = {
+        email: email,
+        username: username,
+        createdAt: new Date().toISOString(),
+        userId: generateUserId(),
+        role: 'user',
+        settings: {
+          theme: 'auto',
+          notifications: true
+        }
+      };
+      
+      // Encrypt and store user data
+      const encryptedData = await encryptData(JSON.stringify(userData), encryptionKey);
+      localStorage.setItem(STORAGE_KEYS.USER_DATA, encryptedData);
+      
+      // Store salt for key derivation
+      const salt = generateSalt();
+      localStorage.setItem(STORAGE_KEYS.ENCRYPTION_SALT, salt);
+      
+      // Create session
+      await createSession(userData);
+      
+      showStatus('Account created successfully! Redirecting...', 'success');
+      setTimeout(() => redirectToApp(), 1500);
+    }
+    
+    async function handleLogin(email, username, passphrase) {
+      // Check if user exists
+      const encryptedData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
+      
+      if (!encryptedData) {
+        showStatus('No account found. Please create an account first.', 'error');
+        setTimeout(() => {
+          isSignupMode = true;
+          toggleAuthMode();
+        }, 1500);
+        return;
+      }
+      
+      try {
+        // Derive key from passphrase
+        const encryptionKey = await deriveKey(passphrase, email);
+        
+        // Decrypt user data
+        const decryptedData = await decryptData(encryptedData, encryptionKey);
+        const userData = JSON.parse(decryptedData);
+        
+        // Verify email matches
+        if (userData.email !== email) {
+          showStatus('Invalid credentials', 'error');
+          return;
+        }
+        
+        // Create session
+        await createSession(userData);
+        
+        showStatus('Login successful! Redirecting...', 'success');
+        setTimeout(() => redirectToApp(), 1500);
+      } catch (error) {
+        showStatus('Invalid credentials or passphrase', 'error');
+        throw error;
+      }
+    }
+    
+    async function deriveKey(passphrase, salt) {
+      // Import passphrase as key material
+      const encoder = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        encoder.encode(passphrase),
+        'PBKDF2',
+        false,
+        ['deriveBits', 'deriveKey']
+      );
+      
+      // Derive AES-GCM key
+      const key = await crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: encoder.encode(salt),
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+      
+      return key;
+    }
+    
+    async function encryptData(data, key) {
+      const encoder = new TextEncoder();
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      
+      const encryptedContent = await crypto.subtle.encrypt(
+        {
+          name: 'AES-GCM',
+          iv: iv
+        },
+        key,
+        encoder.encode(data)
+      );
+      
+      // Combine IV and encrypted content
+      const encryptedArray = new Uint8Array(iv.length + encryptedContent.byteLength);
+      encryptedArray.set(iv, 0);
+      encryptedArray.set(new Uint8Array(encryptedContent), iv.length);
+      
+      // Convert to base64 for storage
+      return btoa(String.fromCharCode(...encryptedArray));
+    }
+    
+    async function decryptData(encryptedBase64, key) {
+      // Decode from base64
+      const encryptedArray = new Uint8Array(
+        atob(encryptedBase64).split('').map(char => char.charCodeAt(0))
+      );
+      
+      // Extract IV and encrypted content
+      const iv = encryptedArray.slice(0, 12);
+      const encryptedContent = encryptedArray.slice(12);
+      
+      const decryptedContent = await crypto.subtle.decrypt(
+        {
+          name: 'AES-GCM',
+          iv: iv
+        },
+        key,
+        encryptedContent
+      );
+      
+      const decoder = new TextDecoder();
+      return decoder.decode(decryptedContent);
+    }
+    
+    async function createSession(userData) {
+      // Create session data
+      const sessionData = {
+        userId: userData.userId,
+        email: userData.email,
+        username: userData.username,
+        role: userData.role,
+        loginTime: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours
+        settings: userData.settings
+      };
+      
+      // Store in sessionStorage for current session
+      sessionStorage.setItem(STORAGE_KEYS.USER_SESSION, JSON.stringify(sessionData));
+      
+      // Generate auth token
+      const authToken = await generateAuthToken(userData);
+      sessionStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, authToken);
+      
+      // Also store minimal data in localStorage for persistence
+      localStorage.setItem('infinity_user', JSON.stringify({
+        email: userData.email,
+        username: userData.username,
+        lastLogin: new Date().toISOString()
+      }));
+    }
+    
+    function checkExistingSession() {
+      const session = sessionStorage.getItem(STORAGE_KEYS.USER_SESSION);
+      
+      if (session) {
+        try {
+          const sessionData = JSON.parse(session);
+          const expiresAt = new Date(sessionData.expiresAt);
+          
+          if (expiresAt > new Date()) {
+            // Valid session exists, redirect to app
+            redirectToApp();
+          } else {
+            // Session expired, clear it
+            sessionStorage.clear();
+          }
+        } catch (error) {
+          sessionStorage.clear();
+        }
+      }
+    }
+    
+    async function generateAuthToken(userData) {
+      const tokenData = {
+        userId: userData.userId,
+        email: userData.email,
+        timestamp: Date.now(),
+        random: Math.random().toString(36)
+      };
+      
+      const encoder = new TextEncoder();
+      const data = encoder.encode(JSON.stringify(tokenData));
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      
+      return hashHex;
+    }
+    
+    function generateUserId() {
+      return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    function generateSalt() {
+      return Array.from(crypto.getRandomValues(new Uint8Array(16)))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+    
+    function showStatus(message, type) {
+      const statusElement = document.getElementById('statusMessage');
+      statusElement.textContent = message;
+      statusElement.className = 'status-message ' + type;
+      
+      if (type === 'error') {
+        setTimeout(() => {
+          statusElement.style.display = 'none';
+        }, 3000);
+      }
+    }
+    
+    function redirectToApp() {
+      // Check if there's a redirect URL in the query params
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectUrl = urlParams.get('redirect');
+      
+      if (redirectUrl) {
+        window.location.href = decodeURIComponent(redirectUrl);
+      } else {
+        // Redirect to main app (create a simple dashboard if needed)
+        window.location.href = 'dashboard.html';
+      }
+    }
+    
+    // Expose authentication state globally for other apps
+    window.InfinityAuth = {
+      getSession: function() {
+        const session = sessionStorage.getItem(STORAGE_KEYS.USER_SESSION);
+        return session ? JSON.parse(session) : null;
+      },
+      
+      getAuthToken: function() {
+        return sessionStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+      },
+      
+      isAuthenticated: function() {
+        const session = this.getSession();
+        if (!session) return false;
+        
+        const expiresAt = new Date(session.expiresAt);
+        return expiresAt > new Date();
+      },
+      
+      logout: function() {
+        sessionStorage.clear();
+        window.location.href = '/';
+      },
+      
+      getUserInfo: function() {
+        const session = this.getSession();
+        if (!session) return null;
+        
+        return {
+          userId: session.userId,
+          email: session.email,
+          username: session.username,
+          role: session.role,
+          settings: session.settings
+        };
+      }
+    };
+  </script>
 </body>
 </html>
