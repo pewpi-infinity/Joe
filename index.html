@@ -362,8 +362,12 @@
     }
     
     async function handleSignup(email, username, passphrase) {
-      // Generate encryption key from passphrase
-      const encryptionKey = await deriveKey(passphrase, email);
+      // Generate and store salt for key derivation
+      const salt = generateSalt();
+      localStorage.setItem(STORAGE_KEYS.ENCRYPTION_SALT, salt);
+      
+      // Generate encryption key from passphrase and salt
+      const encryptionKey = await deriveKey(passphrase, salt);
       
       // Create user data object
       const userData = {
@@ -382,10 +386,6 @@
       const encryptedData = await encryptData(JSON.stringify(userData), encryptionKey);
       localStorage.setItem(STORAGE_KEYS.USER_DATA, encryptedData);
       
-      // Store salt for key derivation
-      const salt = generateSalt();
-      localStorage.setItem(STORAGE_KEYS.ENCRYPTION_SALT, salt);
-      
       // Create session
       await createSession(userData);
       
@@ -396,8 +396,9 @@
     async function handleLogin(email, username, passphrase) {
       // Check if user exists
       const encryptedData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
+      const salt = localStorage.getItem(STORAGE_KEYS.ENCRYPTION_SALT);
       
-      if (!encryptedData) {
+      if (!encryptedData || !salt) {
         showStatus('No account found. Please create an account first.', 'error');
         setTimeout(() => {
           isSignupMode = true;
@@ -407,8 +408,8 @@
       }
       
       try {
-        // Derive key from passphrase
-        const encryptionKey = await deriveKey(passphrase, email);
+        // Derive key from passphrase and stored salt
+        const encryptionKey = await deriveKey(passphrase, salt);
         
         // Decrypt user data
         const decryptedData = await decryptData(encryptedData, encryptionKey);
@@ -599,8 +600,10 @@
       if (redirectUrl) {
         window.location.href = decodeURIComponent(redirectUrl);
       } else {
-        // Redirect to main app (create a simple dashboard if needed)
-        window.location.href = 'dashboard.html';
+        // Redirect to dashboard - use relative path from current location
+        const currentPath = window.location.pathname;
+        const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+        window.location.href = basePath + 'dashboard.html';
       }
     }
     

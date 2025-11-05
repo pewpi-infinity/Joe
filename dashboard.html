@@ -145,7 +145,7 @@
 
     <!-- Rogers AI Dock -->
     <div class="rogersDock">
-      <button class="rogBtn" id="rogBtn" title="Rogers AI"><img src="einstein-avatar.png" alt="Rogers Einstein" onerror="this.remove(); this.closest('button').textContent='R';"></button>
+      <button class="rogBtn" id="rogBtn" title="Rogers AI"><img src="einstein-avatar.png" alt="Rogers Einstein" onerror="this.style.display='none'; const btn=this.closest('button'); if(btn && !btn.textContent.trim()) btn.textContent='R';"></button>
     </div>
     <div class="chatBox" id="chatBox">
       <div class="chatHeader">
