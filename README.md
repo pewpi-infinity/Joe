@@ -79,3 +79,6 @@ Open source - feel free to use and modify!
 ---
 
 **Note:** The static version (`portal.html`) works entirely in the browser. The Python version (`infinity_portal.py`) offers the same features but runs as a local Flask server.
+# Rogers
+
+This is the README for the Rogers/Infinity Voice Module app.
