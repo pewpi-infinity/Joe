@@ -268,7 +268,7 @@
       analyser.getByteTimeDomainData(buf);
       ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.beginPath(); const h=canvas.height, w=canvas.width;
-      for(let i=0;i<w;i++){ const v = buf[Math.floor(i/buf.length*buf.length)]/128.0 - 1.0; const y = h/2 + v*h*0.4; i?ctx.lineTo(i,y):ctx.moveTo(i,y); }
+      for(let i=0;i<w;i++){ const v = buf[Math.floor(i/w*buf.length)]/128.0 - 1.0; const y = h/2 + v*h*0.4; i?ctx.lineTo(i,y):ctx.moveTo(i,y); }
       ctx.strokeStyle="#6aa7ff"; ctx.lineWidth=2; ctx.stroke();
       scopeTimer = requestAnimationFrame(frame);
     }
