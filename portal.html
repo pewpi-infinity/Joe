@@ -211,8 +211,8 @@
 
   // --------- Pi Singer ---------
   let ac, master, analyser, scopeTimer, nodes=[];
-  const piDigits = "14159265358979323846264338327950288419716939937510"
-                 + "58209749445923078164062862089986280348253421170679";
+  const piDigits = "31415926535897932384626433832795028841971693993751"
+                 + "058209749445923078164062862089986280348253421170679";
   function ensureAudio(){
     if(!ac){ ac = new (window.AudioContext || window.webkitAudioContext)(); master = ac.createGain(); master.gain.value = 0.2; analyser = ac.createAnalyser(); analyser.fftSize = 2048; master.connect(analyser); analyser.connect(ac.destination); }
   }
