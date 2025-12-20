@@ -243,6 +243,47 @@
   </style>
 </head>
 <body>
+<!-- C14_MARIO_TOKEN_PANEL_START -->
+<style>
+.c14wrap{font-family:monospace;background:#0b0f14;color:#e6edf3;padding:14px}
+.c14card{border:1px solid #30363d;border-radius:12px;padding:14px;margin:10px 0}
+.c14value{font-size:2.2em;text-align:center;color:#ffd700;line-height:1.1}
+.c14row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.c14pill{border:1px solid #30363d;border-radius:999px;padding:6px 10px}
+.c14btn{display:block;width:100%;padding:14px;border-radius:12px;border:1px solid #30363d;background:#111827;color:#e6edf3;font-size:1em}
+.c14note{opacity:.85;font-size:.85em;margin-top:8px}
+</style>
+<div class="c14wrap">
+  <div class="c14card">
+    <div class="c14row">
+      <div class="c14pill">🧱</div>
+      <div class="c14pill">🍄</div>
+      <div class="c14pill">⭐</div>
+    </div>
+    <div class="c14value">Token Value: 42</div>
+    <div class="c14note">Repo: Joe • Updated: 2025-12-20 09:56:59</div>
+  </div>
+
+  <div class="c14card">
+    <div class="c14note">Pay via PayPal (email receiver). Amount is set to token value.</div>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="get" target="_blank">
+      <input type="hidden" name="cmd" value="_xclick">
+      <input type="hidden" name="business" value="watsonkris61@gmail.com">
+      <input type="hidden" name="item_name" value="__C14_REPO__ Token 🧱🍄⭐">
+      <input type="hidden" name="amount" value="__C14_VALUE__">
+      <input type="hidden" name="currency_code" value="USD">
+      <button class="c14btn" type="submit">Pay $__C14_VALUE__ via PayPal</button>
+    </form>
+  </div>
+
+  <div class="c14card">
+    <div class="c14note">
+      Mario economy: 🧱 base • 🍄 growth • ⭐ acceleration<br>
+      (This panel is additive and does not replace your existing UI.)
+    </div>
+  </div>
+</div>
+<!-- C14_MARIO_TOKEN_PANEL_END -->
   <div class="login-container">
     <div class="logo-header">
       <h1 class="logo-text">INFINITY</h1>
