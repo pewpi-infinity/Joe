@@ -82,3 +82,24 @@ Open source - feel free to use and modify!
 # Rogers
 
 This is the README for the Rogers/Infinity Voice Module app.
+
+---
+
+## 🧱 Research Notes (mixed)
+**Timestamp:** 2025-12-23T10:59:44Z
+
+### 🟨 Extracted Data
+- Repo files: 30
+- Code present: 7
+
+### 🩷 Investigative
+What is missing, blocked, or undefined.
+
+### 🟩 Engineering / Tools
+What advances this repo fastest.
+
+### 🟥 Routes Worth More
+Two next build paths with reasoning.
+
+### 🟧 Decisions
+Immediate next step and why.
