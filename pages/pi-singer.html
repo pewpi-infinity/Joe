@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+  <title>∞ Pi Singer - Infinity Portal</title>
+  <style>
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      min-height: 100vh;
+    }
+    
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .card {
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 1rem;
+    }
+    
+    .chip {
+      display: inline-block;
+      background: linear-gradient(180deg, #2a54a3, #184285);
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .token-display {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    
+    .token-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffd700;
+    }
+    
+    .page-info {
+      background: rgba(31, 111, 255, 0.1);
+      border: 1px solid rgba(31, 111, 255, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .page-info h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--brand);
+    }
+    
+    .page-info p {
+      margin: 0.25rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      background: linear-gradient(180deg, #2a59b4, #1f49a0);
+      border: 1px solid #3764bf;
+      color: white;
+      border-radius: 14px;
+      padding: 0.6rem 0.9rem;
+      cursor: pointer;
+    }
+    
+    canvas {
+      width: 100%;
+      height: 240px;
+      background: #061326;
+      border: 1px solid #1a2c4d;
+      border-radius: 12px;
+      margin-top: 1rem;
+    }
+    
+    .footer {
+      opacity: 0.8;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
+    
+    input[type="number"], input[type="range"] {
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--edge);
+      background: var(--bg2);
+      color: var(--text);
+    }
+    
+    label {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div id="infinity-header-mount"></div>
+
+<main class="wrap">
+  <!-- Token Display -->
+  <div class="token-display">
+    <span>🧱🍄⭐</span>
+    <span class="token-value">Token Value: 35</span>
+    <span style="margin-left: auto; font-size: 0.8rem; color: var(--muted);">Audio generation free</span>
+  </div>
+  
+  <!-- Page Info -->
+  <div class="page-info">
+    <h3>🎵 Pi Singer - Musical π Generator</h3>
+    <p><strong>Purpose:</strong> Convert digits of π to musical notes with live visualization</p>
+    <p><strong>Research Area:</strong> Web Audio API, mathematical sonification, real-time waveform rendering</p>
+    <p><strong>Building Status:</strong> Complete - Maps π to pentatonic scale with visual feedback</p>
+  </div>
+  
+  <!-- Pi Singer Interface -->
+  <div class="card">
+    <div class="chip">Pi Singer · Web Audio</div>
+    <div class="row">
+      <label>Digits:</label>
+      <input id="digits" type="number" min="8" max="2000" value="64"/>
+      <label>BPM:</label>
+      <input id="bpm" type="range" min="40" max="220" value="120"/>
+      <span id="bpmv">120</span>
+      <button class="btn" onclick="playPi()">Play</button>
+      <button class="btn" onclick="stopAll()">Stop</button>
+    </div>
+    <canvas id="piScope"></canvas>
+    <div class="footer">Maps π digits to a pentatonic scale; shows live waveform.</div>
+  </div>
+</main>
+
+<script src="../pages/shared-header.js"></script>
+<script src="../chat/widget.js"></script>
+
+<script>
+// Pi Singer Implementation
+const piDigits = "31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
+const pentatonic = [261.63, 293.66, 329.63, 392.00, 440.00];
+
+let audioCtx, oscillator, gainNode, analyser, animFrame;
+
+function playPi() {
+  stopAll();
+  const numDigits = parseInt(document.getElementById('digits').value) || 64;
+  const bpm = parseInt(document.getElementById('bpm').value) || 120;
+  const noteDuration = 60000 / bpm / 4;
+
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 2048;
+  
+  const canvas = document.getElementById('piScope');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  function drawWaveform() {
+    animFrame = requestAnimationFrame(drawWaveform);
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyser.getByteTimeDomainData(dataArray);
+
+    ctx.fillStyle = '#061326';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#1f6fff';
+    ctx.beginPath();
+
+    const sliceWidth = canvas.width / bufferLength;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128.0;
+      const y = v * canvas.height / 2;
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+
+      x += sliceWidth;
+    }
+
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
+  }
+
+  drawWaveform();
+
+  let i = 0;
+  function playNote() {
+    if (i >= numDigits || i >= piDigits.length) {
+      stopAll();
+      return;
+    }
+
+    const digit = parseInt(piDigits[i]);
+    const freq = pentatonic[digit % 5];
+
+    oscillator = audioCtx.createOscillator();
+    gainNode = audioCtx.createGain();
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.value = freq;
+    gainNode.gain.value = 0.3;
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    
+    oscillator.start();
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + noteDuration / 1000);
+    oscillator.stop(audioCtx.currentTime + noteDuration / 1000);
+
+    i++;
+    setTimeout(playNote, noteDuration);
+  }
+
+  playNote();
+}
+
+function stopAll() {
+  if (oscillator) {
+    try { oscillator.stop(); } catch(e) {}
+    oscillator = null;
+  }
+  if (gainNode) gainNode = null;
+  if (animFrame) {
+    cancelAnimationFrame(animFrame);
+    animFrame = null;
+  }
+  if (audioCtx) {
+    audioCtx.close();
+    audioCtx = null;
+  }
+}
+
+document.getElementById('bpm').addEventListener('input', e => {
+  document.getElementById('bpmv').textContent = e.target.value;
+});
+</script>
+
+</body>
+</html>
