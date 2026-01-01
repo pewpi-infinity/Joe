@@ -14,7 +14,8 @@ fi
 
 # Start the router service
 echo "🚀 Starting Mongoose Router on port 5001..."
-ROUTER_PORT=5001 python3 router.py &
+# Set debug mode for development (disable in production by omitting FLASK_DEBUG)
+ROUTER_PORT=5001 FLASK_DEBUG=true python3 router.py &
 ROUTER_PID=$!
 echo "✓ Router started (PID: $ROUTER_PID)"
 echo ""

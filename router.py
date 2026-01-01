@@ -217,6 +217,8 @@ def mongoose_token():
 
 if __name__ == '__main__':
     port = int(os.environ.get('ROUTER_PORT', 5001))  # Default to 5001 to match documentation
+    debug_mode = os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
     print(f"Starting Mongoose Router on port {port}")
     print(f"Mongoose config: {mongoose_config}")
-    app.run(host='0.0.0.0', port=port, debug=True)
+    print(f"Debug mode: {debug_mode}")
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)

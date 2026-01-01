@@ -53,6 +53,10 @@ pip install -r requirements.txt
 
 3. Start the Mongoose Router:
 ```bash
+# Development mode (with debug)
+ROUTER_PORT=5001 FLASK_DEBUG=true python3 router.py
+
+# Production mode (without debug, recommended for public deployment)
 ROUTER_PORT=5001 python3 router.py
 ```
 

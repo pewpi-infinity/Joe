@@ -267,6 +267,36 @@ All pages use the unified design system from `assets/css/infinity-design.css`. K
 
 This is normal in `passive` mode. The system will use offline fallback responses.
 
+## Security Notes
+
+### Development vs Production
+
+The router service has different modes for development and production:
+
+**Development mode** (default with `start.sh`):
+```bash
+FLASK_DEBUG=true python3 router.py
+```
+- Enables detailed error messages
+- Includes debugger
+- **NOT SECURE** for public deployment
+
+**Production mode** (recommended for public deployment):
+```bash
+python3 router.py
+```
+- Disables debug mode
+- Minimal error exposure
+- Safe for production use
+
+### Best Practices
+
+1. **Never run debug mode in production** - it allows arbitrary code execution
+2. **Use HTTPS** for public deployments
+3. **Set proper CORS policies** - currently allows all origins (development only)
+4. **Rotate tokens regularly** - implement token expiration as needed
+5. **Review logs** - monitor for suspicious activity
+
 ## Credits
 
 - **Operator**: Kris Watson
