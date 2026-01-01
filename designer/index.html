@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>∞ Page Designer - Infinity Portal</title>
+  <style>
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      min-height: 100vh;
+    }
+    
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .card {
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 1rem;
+    }
+    
+    .chip {
+      display: inline-block;
+      background: linear-gradient(180deg, #2a54a3, #184285);
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 2rem;
+      background: linear-gradient(135deg, #1f6fff, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .access-badge {
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .access-badge.granted {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: var(--ok);
+    }
+    
+    .access-badge.denied {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ff6b6b;
+    }
+    
+    .designer-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr 300px;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 1024px) {
+      .designer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--brand);
+    }
+    
+    .template-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .template-item {
+      padding: 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--edge);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .template-item:hover {
+      border-color: var(--brand);
+      background: rgba(31, 111, 255, 0.1);
+    }
+    
+    .template-item.selected {
+      border-color: var(--brand);
+      background: rgba(31, 111, 255, 0.2);
+    }
+    
+    .template-name {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .template-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    
+    .canvas-area {
+      min-height: 500px;
+      background: var(--bg2);
+      border: 2px dashed var(--edge);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+    }
+    
+    .canvas-area.has-content {
+      border-style: solid;
+      text-align: left;
+    }
+    
+    .control-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .control-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .control-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--edge);
+      border-radius: 8px;
+      background: var(--bg2);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    
+    .control-input:focus {
+      outline: none;
+      border-color: var(--brand);
+    }
+    
+    .color-picker {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--edge);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(180deg, #2a59b4, #1f49a0);
+      border: 1px solid #3764bf;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(31, 111, 255, 0.3);
+    }
+    
+    .btn-secondary {
+      background: rgba(31, 111, 255, 0.2);
+      border-color: var(--brand);
+    }
+    
+    .toggle-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem;
+      background: var(--bg2);
+      border: 1px solid var(--edge);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .toggle-section:hover {
+      border-color: var(--brand);
+    }
+    
+    .toggle-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    
+    .locked-message {
+      padding: 2rem;
+      text-align: center;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+    
+    .locked-message h2 {
+      color: #ff6b6b;
+      margin-bottom: 1rem;
+    }
+    
+    .token-info {
+      padding: 1rem;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div id="infinity-header-mount"></div>
+
+<main class="wrap">
+  <div class="header">
+    <h1>🎨 Page Designer</h1>
+    <div id="accessBadge" class="access-badge denied">
+      🔒 Access Required
+    </div>
+  </div>
+
+  <div id="accessCheck">
+    <!-- Content will be loaded based on access -->
+  </div>
+</main>
+
+<script src="../pages/shared-header.js"></script>
+<script src="../chat/widget.js"></script>
+<script src="../tokens/economy.js"></script>
+
+<script>
+// Page Designer Implementation
+const tokenEconomy = new TokenEconomy();
+const stats = tokenEconomy.getStats();
+
+const accessBadge = document.getElementById('accessBadge');
+const accessCheck = document.getElementById('accessCheck');
+
+// Check access
+if (stats.hasDesignerAccess || stats.isAdmin) {
+  // Grant access
+  accessBadge.className = 'access-badge granted';
+  accessBadge.innerHTML = stats.isAdmin 
+    ? '👑 Admin Access' 
+    : `✅ Designer Access (${stats.userBalance} tokens)`;
+  
+  renderDesigner();
+} else {
+  // Deny access
+  accessBadge.className = 'access-badge denied';
+  accessBadge.innerHTML = '🔒 Access Required';
+  
+  renderLockedMessage();
+}
+
+function renderLockedMessage() {
+  accessCheck.innerHTML = `
+    <div class="locked-message">
+      <h2>🔒 Page Designer Access Required</h2>
+      <p>To access the Page Designer tool, you need to have tokens in your account.</p>
+      <p>Purchase tokens via PayPal to unlock designer features and create custom pages.</p>
+      <div class="token-info">
+        <strong>Your Current Balance:</strong> ${stats.userBalance} tokens<br>
+        <strong>Minimum Required:</strong> 1 token
+      </div>
+      <button class="btn" onclick="window.location.href='../dashboard.html'">
+        Go to Dashboard
+      </button>
+    </div>
+  `;
+}
+
+function renderDesigner() {
+  accessCheck.innerHTML = `
+    <div class="token-info">
+      <strong>🧱🍄⭐ Your Token Balance:</strong> ${stats.userBalance} tokens
+      ${stats.isAdmin ? '<br><strong>👑 Admin Mode:</strong> Unlimited page creation' : ''}
+    </div>
+
+    <div class="designer-grid">
+      <!-- Left Panel: Templates -->
+      <div class="card">
+        <div class="section-title">📋 Templates</div>
+        <div class="template-list" id="templateList">
+          <div class="template-item" data-template="blank" onclick="selectTemplate('blank')">
+            <div class="template-name">⬜ Blank Page</div>
+            <div class="template-desc">Start from scratch</div>
+          </div>
+          <div class="template-item" data-template="chat" onclick="selectTemplate('chat')">
+            <div class="template-name">💬 Chat Page</div>
+            <div class="template-desc">AI chat interface</div>
+          </div>
+          <div class="template-item" data-template="dashboard" onclick="selectTemplate('dashboard')">
+            <div class="template-name">📊 Dashboard</div>
+            <div class="template-desc">Overview page</div>
+          </div>
+          <div class="template-item" data-template="tools" onclick="selectTemplate('tools')">
+            <div class="template-name">🛠️ Tools Page</div>
+            <div class="template-desc">Utility collection</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Canvas -->
+      <div class="card">
+        <div class="section-title">🖼️ Preview</div>
+        <div class="canvas-area" id="canvas">
+          <p>Select a template to get started</p>
+          <p style="font-size: 3rem; opacity: 0.3;">🎨</p>
+        </div>
+      </div>
+
+      <!-- Right Panel: Controls -->
+      <div class="card">
+        <div class="section-title">⚙️ Customize</div>
+        
+        <div class="control-group">
+          <label class="control-label">Page Name</label>
+          <input type="text" class="control-input" id="pageName" placeholder="My Custom Page">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Page Title</label>
+          <input type="text" class="control-input" id="pageTitle" placeholder="∞ My Page">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Token Cost</label>
+          <input type="number" class="control-input" id="tokenCost" value="10" min="0">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Brand Color</label>
+          <input type="color" class="color-picker" id="brandColor" value="#1f6fff">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Background Style</label>
+          <select class="control-input" id="bgStyle">
+            <option value="gradient">Dark Gradient</option>
+            <option value="solid">Solid Dark</option>
+            <option value="light">Light Theme</option>
+          </select>
+        </div>
+
+        <div class="section-title" style="margin-top: 2rem;">📦 Components</div>
+        
+        <div class="toggle-section" onclick="toggleComponent('chat')">
+          <span>💬 Chat Widget</span>
+          <input type="checkbox" class="toggle-checkbox" id="comp-chat" checked>
+        </div>
+
+        <div class="toggle-section" onclick="toggleComponent('tokens')">
+          <span>🧱 Token Display</span>
+          <input type="checkbox" class="toggle-checkbox" id="comp-tokens" checked>
+        </div>
+
+        <div class="toggle-section" onclick="toggleComponent('header')">
+          <span>📱 Navigation Header</span>
+          <input type="checkbox" class="toggle-checkbox" id="comp-header" checked>
+        </div>
+
+        <button class="btn" onclick="savePage()">💾 Save Page</button>
+        <button class="btn btn-secondary" onclick="exportPage()">📤 Export HTML</button>
+        <button class="btn btn-secondary" onclick="resetDesigner()">🔄 Reset</button>
+      </div>
+    </div>
+  `;
+}
+
+let selectedTemplate = null;
+let pageConfig = {
+  template: null,
+  name: '',
+  title: '',
+  tokenCost: 10,
+  brandColor: '#1f6fff',
+  bgStyle: 'gradient',
+  components: {
+    chat: true,
+    tokens: true,
+    header: true
+  }
+};
+
+function selectTemplate(template) {
+  selectedTemplate = template;
+  
+  // Update UI
+  document.querySelectorAll('.template-item').forEach(item => {
+    item.classList.remove('selected');
+  });
+  document.querySelector(`[data-template="${template}"]`).classList.add('selected');
+  
+  // Update canvas
+  const canvas = document.getElementById('canvas');
+  canvas.className = 'canvas-area has-content';
+  canvas.innerHTML = `
+    <h3>Template: ${template}</h3>
+    <p>Customize your page using the controls on the right.</p>
+    <div style="padding: 2rem; background: var(--bg2); border-radius: 12px; margin-top: 1rem;">
+      <strong>Preview:</strong> Your ${template} page will appear here
+    </div>
+  `;
+  
+  pageConfig.template = template;
+}
+
+function toggleComponent(component) {
+  const checkbox = document.getElementById(`comp-${component}`);
+  checkbox.checked = !checkbox.checked;
+  pageConfig.components[component] = checkbox.checked;
+}
+
+function savePage() {
+  // Collect all values
+  pageConfig.name = document.getElementById('pageName').value || 'Untitled Page';
+  pageConfig.title = document.getElementById('pageTitle').value || '∞ Infinity';
+  pageConfig.tokenCost = parseInt(document.getElementById('tokenCost').value) || 10;
+  pageConfig.brandColor = document.getElementById('brandColor').value;
+  pageConfig.bgStyle = document.getElementById('bgStyle').value;
+  
+  if (!pageConfig.template) {
+    alert('Please select a template first!');
+    return;
+  }
+  
+  // Save to localStorage
+  const pages = JSON.parse(localStorage.getItem('designer_pages') || '[]');
+  pageConfig.id = 'page_' + Date.now();
+  pageConfig.createdAt = new Date().toISOString();
+  pages.push(pageConfig);
+  localStorage.setItem('designer_pages', JSON.stringify(pages));
+  
+  alert(`✅ Page "${pageConfig.name}" saved successfully!\n\nYou can find it in your saved pages.`);
+}
+
+function exportPage() {
+  if (!pageConfig.template) {
+    alert('Please select a template first!');
+    return;
+  }
+  
+  alert('Export feature coming soon! This will generate a complete HTML file for your page.');
+}
+
+function resetDesigner() {
+  if (confirm('Reset the designer? This will clear your current work.')) {
+    pageConfig = {
+      template: null,
+      name: '',
+      title: '',
+      tokenCost: 10,
+      brandColor: '#1f6fff',
+      bgStyle: 'gradient',
+      components: { chat: true, tokens: true, header: true }
+    };
+    renderDesigner();
+  }
+}
+</script>
+
+</body>
+</html>
