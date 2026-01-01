@@ -94,7 +94,7 @@ const InfinityAuth = {
 
   // Generate user ID
   generateUserId() {
-    return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
   },
 
   // Generate salt
@@ -151,7 +151,10 @@ const InfinityAuth = {
   // Logout
   logout() {
     sessionStorage.clear();
-    window.location.href = '/';
+    // Use relative path to support subdirectory deployments
+    const currentPath = window.location.pathname;
+    const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+    window.location.href = basePath || '/';
   },
 
   // Get user info

@@ -73,7 +73,8 @@ def get_mongoose_response(query, repo, context=None):
     
     # Default response
     if len(q) > 0:
-        return f"I received your query about '{query[:50]}...' - Mongoose OS is processing in {mode} mode. This is a demo response."
+        query_preview = query if len(query) <= 50 else query[:50] + '...'
+        return f"I received your query about '{query_preview}' - Mongoose OS is processing in {mode} mode. This is a demo response."
     
     return "Please ask me a question about the repository."
 
@@ -215,7 +216,7 @@ def mongoose_token():
         }), 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('ROUTER_PORT', 5000))
+    port = int(os.environ.get('ROUTER_PORT', 5001))  # Default to 5001 to match documentation
     print(f"Starting Mongoose Router on port {port}")
     print(f"Mongoose config: {mongoose_config}")
     app.run(host='0.0.0.0', port=port, debug=True)
