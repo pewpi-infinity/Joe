@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Pi Singer - Infinity Portal</title>
+  <link rel="stylesheet" href="../assets/css/infinity-design.css" />
+  <style>
+    :root{
+      --bg:#0c1420; --bg2:#0f1a2a; --card:#101e30; --edge:#14243a;
+      --text:#eaf1ff; --muted:#a7b6d9; --brand:#1f6fff; --chip:#2563eb;
+    }
+    body{background:linear-gradient(120deg,#06101f,#0e1b30 70%); color:var(--text);}
+    .chip{display:inline-block;background:linear-gradient(180deg,#2a54a3,#184285);padding:.35rem .6rem;border-radius:999px;font-size:.8rem}
+    .row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+    canvas{width:100%;height:240px;background:#061326;border:1px solid #1a2c4d;border-radius:12px;margin-top:1rem}
+    .footer{opacity:.8;font-size:.85rem;margin-top:.6rem;text-align:center;}
+    input[type="range"]{width:160px}
+    label{margin-right:0.5rem}
+  </style>
+</head>
+<body>
+  <div class="header" style="background:linear-gradient(180deg,#091425,transparent);backdrop-filter:blur(8px);">
+    <div class="header-content">
+      <a href="../dashboard.html" class="logo">∞ INFINITY</a>
+      <div class="nav">
+        <a href="../pages/chat.html">Chat</a>
+        <a href="../pages/pi-singer.html" class="active">Pi Singer</a>
+        <a href="../pages/oscilloscope.html">Oscilloscope</a>
+        <a href="../pages/3d-viewer.html">3D Viewer</a>
+        <a href="../dashboard.html">Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="chip">Pi Singer · Web Audio</div>
+      <div class="row" style="margin-top:1rem">
+        <label>Digits:</label>
+        <input id="digits" type="number" min="8" max="2000" value="64" class="input" style="width:100px"/>
+        <label>BPM:</label>
+        <input id="bpm" type="range" min="40" max="220" value="120"/>
+        <span id="bpmv">120</span>
+        <button class="btn-primary" onclick="playPi()">Play</button>
+        <button class="btn-secondary" onclick="stopAll()">Stop</button>
+      </div>
+      <canvas id="piScope"></canvas>
+      <div class="footer">Maps π digits to a pentatonic scale; shows live waveform visualization.</div>
+    </div>
+  </div>
+
+  <script src="../assets/js/infinity-auth.js"></script>
+  <script>
+    // Check authentication
+    if (!InfinityAuth.requireAuth()) {
+      // Will redirect to login
+    }
+
+    let ac, master, analyser, scopeTimer, nodes=[];
+    const piDigits = "31415926535897932384626433832795028841971693993751"
+                   + "058209749445923078164062862089986280348253421170679";
+    
+    function ensureAudio(){
+      if(!ac){ 
+        ac = new (window.AudioContext || window.webkitAudioContext)(); 
+        master = ac.createGain(); 
+        master.gain.value = 0.2; 
+        analyser = ac.createAnalyser(); 
+        analyser.fftSize = 2048; 
+        master.connect(analyser); 
+        analyser.connect(ac.destination); 
+      }
+    }
+    
+    const noteTable=[0,2,4,7,9,12,14,16,19,21]; // pentatonic mapping in semitones
+    
+    function midiToFreq(m){ return 440*Math.pow(2,(m-69)/12); }
+    
+    function playPi(){
+      ensureAudio(); 
+      stopAll();
+      
+      const n = Math.max(8, Math.min(parseInt(document.getElementById('digits').value||"64"), 2000));
+      const bpm = parseInt(document.getElementById('bpm').value||"120"); 
+      document.getElementById('bpmv').textContent=bpm;
+      const step = 60/bpm;
+      
+      for(let i=0;i<n;i++){
+        const d = parseInt(piDigits[i%piDigits.length]); 
+        const midi = 60 + noteTable[d%noteTable.length];
+        const t = ac.currentTime + i*step; 
+        const o = ac.createOscillator(); 
+        const g = ac.createGain();
+        o.frequency.value = midiToFreq(midi); 
+        g.gain.setValueAtTime(0, t); 
+        g.gain.linearRampToValueAtTime(0.35, t+0.01); 
+        g.gain.exponentialRampToValueAtTime(0.001, t+step*0.9);
+        o.connect(g); 
+        g.connect(master); 
+        o.start(t); 
+        o.stop(t+step); 
+        nodes.push(o); 
+        nodes.push(g);
+      }
+      
+      drawScope(document.getElementById('piScope'));
+    }
+    
+    function drawScope(canvas){
+      if(!analyser) return;
+      const ctx = canvas.getContext('2d'); 
+      const buf = new Uint8Array(analyser.fftSize);
+      if(scopeTimer) cancelAnimationFrame(scopeTimer);
+      
+      function frame(){
+        analyser.getByteTimeDomainData(buf);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.beginPath(); 
+        const h=canvas.height, w=canvas.width;
+        for(let i=0;i<w;i++){ 
+          const v = buf[Math.floor(i/w*buf.length)]/128.0 - 1.0; 
+          const y = h/2 + v*h*0.4; 
+          i?ctx.lineTo(i,y):ctx.moveTo(i,y); 
+        }
+        ctx.strokeStyle="#6aa7ff"; 
+        ctx.lineWidth=2; 
+        ctx.stroke();
+        scopeTimer = requestAnimationFrame(frame);
+      }
+      frame();
+    }
+    
+    function stopAll(){
+      nodes.forEach(n=>{ 
+        try{ 
+          if(n.stop) n.stop(); 
+          if(n.disconnect) n.disconnect(); 
+        }catch(e){} 
+      }); 
+      nodes=[];
+      if(scopeTimer) cancelAnimationFrame(scopeTimer);
+    }
+    
+    document.getElementById('bpm').addEventListener('input', e=>document.getElementById('bpmv').textContent=e.target.value);
+  </script>
+</body>
+</html>
