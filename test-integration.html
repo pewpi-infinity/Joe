@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test - Mongoose OS Integration</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f8fafc;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 { color: #003087; }
+    h2 { color: #0b5fd7; font-size: 18px; }
+    .success { color: #22c55e; }
+    .error { color: #ef4444; }
+    .info { color: #637083; }
+    button {
+      background: linear-gradient(135deg, #003087, #0b5fd7);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 5px;
+    }
+    button:hover { opacity: 0.9; }
+    pre {
+      background: #0b0f14;
+      color: #e6edf3;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    .status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .status-indicator.online { background: #22c55e; }
+    .status-indicator.offline { background: #ef4444; }
+  </style>
+</head>
+<body>
+  <h1>🐍 Mongoose OS Integration Test</h1>
+  
+  <div class="test-section">
+    <h2>1. Authentication System</h2>
+    <p class="info">Testing Infinity Auth library...</p>
+    <button onclick="testAuth()">Test Authentication</button>
+    <div id="auth-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>2. Mongoose Client</h2>
+    <p class="info">Testing Mongoose OS client library...</p>
+    <button onclick="testMongooseHealth()">Test Health Check</button>
+    <button onclick="testMongooseQuery()">Test Query</button>
+    <div id="mongoose-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>3. Router Endpoint</h2>
+    <p class="info">Testing /router/ask endpoint...</p>
+    <button onclick="testRouterAsk()">Test Router</button>
+    <div id="router-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>4. File Structure</h2>
+    <p class="info">Checking new file organization...</p>
+    <ul>
+      <li>✓ /pages/ - Individual tool pages</li>
+      <li>✓ /components/ - Reusable components</li>
+      <li>✓ /assets/ - Shared CSS and JS</li>
+      <li>✓ /mongoose/ - Mongoose OS integration</li>
+    </ul>
+  </div>
+
+  <div class="test-section">
+    <h2>5. Navigation Test</h2>
+    <p class="info">Test navigation between pages...</p>
+    <button onclick="window.location.href='index.html'">Go to Login</button>
+    <button onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+    <button onclick="window.location.href='pages/chat.html'">Go to Chat</button>
+  </div>
+
+  <script src="assets/js/infinity-auth.js"></script>
+  <script src="mongoose/lib/mongoose-client.js"></script>
+  <script>
+    function testAuth() {
+      const result = document.getElementById('auth-result');
+      try {
+        // Test if InfinityAuth is available
+        if (typeof InfinityAuth !== 'undefined') {
+          const isAuth = InfinityAuth.isAuthenticated();
+          const session = InfinityAuth.getSession();
+          
+          result.innerHTML = `
+            <p class="success">✓ InfinityAuth loaded successfully</p>
+            <p>Authenticated: ${isAuth ? '<span class="success">Yes</span>' : '<span class="error">No</span>'}</p>
+            ${session ? `<p>User: ${session.username} (${session.email})</p>` : ''}
+            <pre>${JSON.stringify({
+              isAuthenticated: isAuth,
+              hasSession: !!session,
+              methods: Object.keys(InfinityAuth)
+            }, null, 2)}</pre>
+          `;
+        } else {
+          result.innerHTML = '<p class="error">✗ InfinityAuth not loaded</p>';
+        }
+      } catch (error) {
+        result.innerHTML = `<p class="error">✗ Error: ${error.message}</p>`;
+      }
+    }
+
+    async function testMongooseHealth() {
+      const result = document.getElementById('mongoose-result');
+      result.innerHTML = '<p class="info">Checking Mongoose OS health...</p>';
+      
+      try {
+        const health = await window.MongooseClient.healthCheck();
+        const isHealthy = health.healthy;
+        
+        result.innerHTML = `
+          <p class="${isHealthy ? 'success' : 'error'}">
+            <span class="status-indicator ${isHealthy ? 'online' : 'offline'}"></span>
+            ${isHealthy ? '✓ Mongoose OS is online' : '✗ Mongoose OS is offline'}
+          </p>
+          <pre>${JSON.stringify(health, null, 2)}</pre>
+        `;
+      } catch (error) {
+        result.innerHTML = `<p class="error">✗ Error: ${error.message}</p>`;
+      }
+    }
+
+    async function testMongooseQuery() {
+      const result = document.getElementById('mongoose-result');
+      result.innerHTML = '<p class="info">Sending test query...</p>';
+      
+      try {
+        const response = await window.MongooseClient.query('What is this?');
+        
+        result.innerHTML = `
+          <p class="${response.ok ? 'success' : 'error'}">
+            ${response.ok ? '✓ Query successful' : '✗ Query failed'}
+          </p>
+          <p><strong>Answer:</strong> ${response.answer}</p>
+          <pre>${JSON.stringify(response, null, 2)}</pre>
+        `;
+      } catch (error) {
+        result.innerHTML = `<p class="error">✗ Error: ${error.message}</p>`;
+      }
+    }
+
+    async function testRouterAsk() {
+      const result = document.getElementById('router-result');
+      result.innerHTML = '<p class="info">Testing /router/ask endpoint...</p>';
+      
+      try {
+        const response = await fetch('/router/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            repo: 'Joe',
+            query: 'Test query from test page',
+            t: Date.now()
+          })
+        });
+        
+        const data = await response.json();
+        
+        result.innerHTML = `
+          <p class="${data.ok ? 'success' : 'error'}">
+            ${data.ok ? '✓ Router endpoint working' : '✗ Router endpoint failed'}
+          </p>
+          <p><strong>Answer:</strong> ${data.answer}</p>
+          ${data.token ? `<p><strong>Token:</strong> ${data.token.id} (value: ${data.token.value})</p>` : ''}
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+      } catch (error) {
+        result.innerHTML = `
+          <p class="error">✗ Error: ${error.message}</p>
+          <p class="info">Note: Make sure router.py is running on port 5001</p>
+          <pre>Start with: ROUTER_PORT=5001 python3 router.py</pre>
+        `;
+      }
+    }
+
+    // Auto-run basic tests on load
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        testAuth();
+        testMongooseHealth();
+      }, 500);
+    });
+  </script>
+</body>
+</html>

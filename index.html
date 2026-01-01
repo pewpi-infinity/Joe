@@ -1,47 +1,13 @@
 <!doctype html>
-[core]
-	repositoryformatversion = 0
-	filemode = true
-	bare = false
-	logallrefupdates = true
-[remote "origin"]
-	url = https://github.com/pewpi-infinity/infinity-brain-111.git
-	fetch = +refs/heads/main:refs/remotes/origin/main
-[branch "main"]
-	remote = origin
-	merge = refs/heads/main
-<!-- 🐶 PEWPI SIGN-IN (GLOBAL) -->
-<div id="pewpi-gate">
-  <h1>🐶 pewpi</h1>
-  <input id="pewpi_user" placeholder="Handle">
-  <button onclick="pewpiUnlock()">Enter</button>
-</div>
-<script>
-function pewpiUnlock(){
-  localStorage.setItem("pewpi_user", document.getElementById("pewpi_user").value);
-  document.getElementById("pewpi-gate").style.display="none";
-  document.body.classList.add("pewpi-live");
-}
-if(localStorage.getItem("pewpi_user")){
-  document.addEventListener("DOMContentLoaded",()=>{
-    const g=document.getElementById("pewpi-gate");
-    if(g) g.style.display="none";
-    document.body.classList.add("pewpi-live");
-  });
-}
-</script>
-<style>
-#pewpi-gate{position:fixed;inset:0;background:#0e0e0e;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
-#pewpi-gate button{background:#ff69b4;border:0;padding:10px 18px}
-body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
-</style>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>∞ Infinity Login</title>
   <meta name="color-scheme" content="light dark"/>
+  <link rel="stylesheet" href="assets/css/infinity-design.css" />
   <style>
+    html, body { 
     :root {
       --bg: #0c1420;
       --bg2: #0f1a2a;
@@ -81,6 +47,9 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     
     .logo-text {
       font-weight: 800;
+      color: var(--blue-1);
+      font-size: 48px;
+      letter-spacing: 3px;
       color: var(--text);
       font-size: 36px;
       letter-spacing: 2px;
@@ -193,10 +162,23 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       font-size: 16px;
     }
     
-    .status-message {
-      margin-top: 16px;
-      padding: 12px;
+    .mongoose-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px;
+      background: rgba(11, 95, 215, 0.08);
+      border: 1px solid rgba(11, 95, 215, 0.2);
       border-radius: 8px;
+      font-size: 12px;
+      color: var(--blue-2);
+    }
+    
+    .mongoose-badge::before {
+      content: "🐍";
+      font-size: 16px;
       font-size: 14px;
       text-align: center;
       display: none;
@@ -270,86 +252,39 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     }
     
     @media (max-width: 600px) {
-      .login-container {
-        padding: 16px;
-      }
-      
-      .login-card {
-        padding: 24px;
-      }
-      
       .logo-text {
-        font-size: 28px;
+        font-size: 36px;
       }
     }
   </style>
 </head>
 <body>
-<!-- C14_MARIO_TOKEN_PANEL_START -->
-<style>
-.c14wrap{font-family:monospace;background:#0b0f14;color:#e6edf3;padding:14px}
-.c14card{border:1px solid #30363d;border-radius:12px;padding:14px;margin:10px 0}
-.c14value{font-size:2.2em;text-align:center;color:#ffd700;line-height:1.1}
-.c14row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.c14pill{border:1px solid #30363d;border-radius:999px;padding:6px 10px}
-.c14btn{display:block;width:100%;padding:14px;border-radius:12px;border:1px solid #30363d;background:#111827;color:#e6edf3;font-size:1em}
-.c14note{opacity:.85;font-size:.85em;margin-top:8px}
-</style>
-<div class="c14wrap">
-  <div class="c14card">
-    <div class="c14row">
-      <div class="c14pill">🧱</div>
-      <div class="c14pill">🍄</div>
-      <div class="c14pill">⭐</div>
-    </div>
-    <div class="c14value">Token Value: 42</div>
-    <div class="c14note">Repo: Joe • Updated: 2025-12-20 09:56:59</div>
-  </div>
-
-  <div class="c14card">
-    <div class="c14note">Pay via PayPal (email receiver). Amount is set to token value.</div>
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="get" target="_blank">
-      <input type="hidden" name="cmd" value="_xclick">
-      <input type="hidden" name="business" value="watsonkris61@gmail.com">
-      <input type="hidden" name="item_name" value="__C14_REPO__ Token 🧱🍄⭐">
-      <input type="hidden" name="amount" value="__C14_VALUE__">
-      <input type="hidden" name="currency_code" value="USD">
-      <button class="c14btn" type="submit">Pay $__C14_VALUE__ via PayPal</button>
-    </form>
-  </div>
-
-  <div class="c14card">
-    <div class="c14note">
-      Mario economy: 🧱 base • 🍄 growth • ⭐ acceleration<br>
-      (This panel is additive and does not replace your existing UI.)
-    </div>
-  </div>
-</div>
-<!-- C14_MARIO_TOKEN_PANEL_END -->
   <div class="login-container">
     <div class="logo-header">
+      <h1 class="logo-text">∞</h1>
+      <p class="logo-subtitle">Infinity AI Platform</p>
       <h1 class="logo-text">INFINITY</h1>
       <p class="logo-subtitle">Mongoose OS AI · Encrypted Authentication</p>
     </div>
     
-    <div class="login-card">
+    <div class="card login-card">
       <h2 id="cardTitle">Welcome</h2>
       <p class="subtitle">Secure login with end-to-end encryption</p>
       
       <form id="loginForm">
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required autocomplete="email" placeholder="your@email.com">
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="your@email.com" class="input">
         </div>
         
         <div class="form-group">
           <label for="username">Display Name</label>
-          <input type="text" id="username" name="username" required autocomplete="name" placeholder="Your Name">
+          <input type="text" id="username" name="username" required autocomplete="name" placeholder="Your Name" class="input">
         </div>
         
         <div class="form-group">
           <label for="passphrase">Secure Passphrase</label>
-          <input type="password" id="passphrase" name="passphrase" required autocomplete="current-password" placeholder="Enter your passphrase">
+          <input type="password" id="passphrase" name="passphrase" required autocomplete="current-password" placeholder="Enter your passphrase" class="input">
         </div>
         
         <button type="submit" class="btn-primary" id="submitBtn">
@@ -360,6 +295,10 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
           End-to-end encrypted with Web Crypto API (AES-GCM)
         </div>
         
+        <div class="mongoose-badge" id="mongooseBadge">
+          <span id="mongooseStatus">Mongoose OS: Checking...</span>
+        </div>
+        
         <div class="status-message" id="statusMessage"></div>
       </form>
       
@@ -368,29 +307,35 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       </div>
       
       <div class="info-box">
-        <strong>Infinity AI-to-AI Security:</strong> Your credentials are encrypted locally using military-grade AES-256-GCM encryption. No data is sent to external servers. All authentication is handled securely within your browser.
+        <strong>Infinity AI-to-AI Security:</strong> Your credentials are encrypted locally using military-grade AES-256-GCM encryption. Mongoose OS AI firmware provides additional authentication layer. All data is secured within your browser.
       </div>
     </div>
   </div>
 
+  <script src="assets/js/infinity-auth.js"></script>
+  <script src="mongoose/lib/mongoose-client.js"></script>
   <script>
-    // Infinity AI-to-AI Encrypted Login System
-    // Uses Web Crypto API for secure encryption
-    
-    const STORAGE_KEYS = {
-      USER_DATA: 'infinity_user_encrypted',
-      USER_SESSION: 'infinity_session',
-      ENCRYPTION_SALT: 'infinity_salt',
-      AUTH_TOKEN: 'infinity_auth_token'
-    };
-    
     let isSignupMode = false;
     
     // Initialize on page load
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       checkExistingSession();
       setupEventListeners();
+      await checkMongooseStatus();
     });
+    
+    async function checkMongooseStatus() {
+      const health = await window.MongooseClient.healthCheck();
+      const badge = document.getElementById('mongooseStatus');
+      
+      if (health.healthy) {
+        badge.textContent = `Mongoose OS: ${health.mode} mode ✓`;
+        badge.style.color = '#22c55e';
+      } else {
+        badge.textContent = 'Mongoose OS: Offline (using fallback)';
+        badge.style.color = '#f59e0b';
+      }
+    }
     
     function setupEventListeners() {
       document.getElementById('loginForm').addEventListener('submit', handleFormSubmit);
@@ -431,10 +376,39 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       document.getElementById('btnText').textContent = 'Processing...';
       
       try {
+        let result;
+        
         if (isSignupMode) {
-          await handleSignup(email, username, passphrase);
+          result = await InfinityAuth.signup(email, username, passphrase);
         } else {
-          await handleLogin(email, username, passphrase);
+          result = await InfinityAuth.login(email, username, passphrase);
+        }
+        
+        if (result.success) {
+          // Authenticate with Mongoose OS
+          const mongooseAuth = await window.MongooseClient.authenticate({
+            email: email,
+            username: username,
+            userId: result.user.userId
+          });
+          
+          if (mongooseAuth.success) {
+            console.log('Mongoose OS authentication successful');
+          }
+          
+          showStatus(isSignupMode ? 'Account created successfully! Redirecting...' : 'Login successful! Redirecting...', 'success');
+          setTimeout(() => redirectToApp(), 1500);
+        } else {
+          showStatus(result.error || 'Authentication failed', 'error');
+          submitBtn.disabled = false;
+          document.getElementById('btnText').textContent = isSignupMode ? 'Create Account' : 'Login';
+          
+          if (result.error === 'No account found' && !isSignupMode) {
+            setTimeout(() => {
+              isSignupMode = true;
+              toggleAuthMode();
+            }, 1500);
+          }
         }
       } catch (error) {
         console.error('Authentication error:', error);
@@ -622,23 +596,8 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     }
     
     function checkExistingSession() {
-      const session = sessionStorage.getItem(STORAGE_KEYS.USER_SESSION);
-      
-      if (session) {
-        try {
-          const sessionData = JSON.parse(session);
-          const expiresAt = new Date(sessionData.expiresAt);
-          
-          if (expiresAt > new Date()) {
-            // Valid session exists, redirect to app
-            redirectToApp();
-          } else {
-            // Session expired, clear it
-            sessionStorage.clear();
-          }
-        } catch (error) {
-          sessionStorage.clear();
-        }
+      if (InfinityAuth.isAuthenticated()) {
+        redirectToApp();
       }
     }
     
@@ -706,277 +665,25 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       const statusElement = document.getElementById('statusMessage');
       statusElement.textContent = message;
       statusElement.className = 'status-message ' + type;
+      statusElement.style.display = 'block';
       
       if (type === 'error') {
         setTimeout(() => {
           statusElement.style.display = 'none';
-        }, 3000);
+        }, 5000);
       }
     }
     
     function redirectToApp() {
-      // Check if there's a redirect URL in the query params
       const urlParams = new URLSearchParams(window.location.search);
       const redirectUrl = urlParams.get('redirect');
       
       if (redirectUrl) {
         window.location.href = decodeURIComponent(redirectUrl);
       } else {
-        // Redirect to dashboard - use relative path from current location
-        const currentPath = window.location.pathname;
-        const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
-        window.location.href = basePath + 'dashboard.html';
+        window.location.href = 'dashboard.html';
       }
     }
-    
-    // Expose authentication state globally for other apps
-    window.InfinityAuth = {
-      getSession: function() {
-        const session = sessionStorage.getItem(STORAGE_KEYS.USER_SESSION);
-        return session ? JSON.parse(session) : null;
-      },
-      
-      getAuthToken: function() {
-        return sessionStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
-      },
-      
-      isAuthenticated: function() {
-        const session = this.getSession();
-        if (!session) return false;
-        
-        const expiresAt = new Date(session.expiresAt);
-        return expiresAt > new Date();
-      },
-      
-      logout: function() {
-        sessionStorage.clear();
-        window.location.href = '/';
-      },
-      
-      getUserInfo: function() {
-        const session = this.getSession();
-        if (!session) return null;
-        
-        return {
-          userId: session.userId,
-          email: session.email,
-          username: session.username,
-          role: session.role,
-          settings: session.settings
-        };
-      }
-    };
   </script>
 </body>
-<!-- C13B0_CHAT_WIDGET_BEGIN -->
-<style>
-  .c13b0-chatfab{position:fixed;right:18px;bottom:18px;z-index:99999;border-radius:999px;padding:12px 14px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer;user-select:none}
-  .c13b0-chatpanel{position:fixed;right:18px;bottom:72px;width:min(520px,calc(100vw - 36px));height:min(560px,calc(100vh - 120px));z-index:99999;border-radius:18px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.35);display:none}
-  .c13b0-chathead{padding:10px 12px;font-weight:800;display:flex;align-items:center;justify-content:space-between}
-  .c13b0-chatbody{height:calc(100% - 94px);overflow:auto;padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px}
-  .c13b0-chatline{white-space:pre-wrap;margin:8px 0}
-  .c13b0-chatbar{display:flex;gap:8px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.10)}
-  .c13b0-chatin{flex:1;border-radius:12px;padding:10px 12px;border:1px solid rgba(255,255,255,.12);outline:none}
-  .c13b0-chatbtn{border-radius:12px;padding:10px 12px;font-weight:800;border:0;cursor:pointer}
-</style>
-
-<div id="c13b0_chat_fab" class="c13b0-chatfab">🧱💬🧱 CHAT</div>
-
-<div id="c13b0_chat_panel" class="c13b0-chatpanel" role="dialog" aria-label="C13B0 Chat">
-  <div class="c13b0-chathead">
-    <div>🧱💬🧱 Repo Terminal</div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <small id="c13b0_chat_repo" style="opacity:.8">repo: (auto)</small>
-      <button id="c13b0_chat_close" class="c13b0-chatbtn">✕</button>
-    </div>
-  </div>
-  <div id="c13b0_chat_body" class="c13b0-chatbody"></div>
-  <div class="c13b0-chatbar">
-    <input id="c13b0_chat_in" class="c13b0-chatin" placeholder="Ask this repo... (returns tokenized answer)" />
-    <button id="c13b0_chat_send" class="c13b0-chatbtn">SEND</button>
-  </div>
-</div>
-
-<script>
-(function(){
-  // Theme: tries to inherit page colors; keeps your design intact.
-  const fab = document.getElementById("c13b0_chat_fab");
-  const panel = document.getElementById("c13b0_chat_panel");
-  const body = document.getElementById("c13b0_chat_body");
-  const input = document.getElementById("c13b0_chat_in");
-  const send = document.getElementById("c13b0_chat_send");
-  const close = document.getElementById("c13b0_chat_close");
-  const repoLabel = document.getElementById("c13b0_chat_repo");
-
-  const repo = (location.pathname.split("/")[1] || "").trim(); // for org pages it’s the repo root on pages
-  repoLabel.textContent = "repo: " + (repo || "(root)");
-
-  // Minimal styling decisions; avoid fighting your CSS
-  fab.style.background = "rgba(0,0,0,.82)";
-  fab.style.color = "white";
-  panel.style.background = "rgba(0,0,0,.90)";
-  panel.style.color = "white";
-  document.querySelector(".c13b0-chathead").style.borderBottom = "1px solid rgba(255,255,255,.10)";
-  input.style.background = "rgba(255,255,255,.06)";
-  input.style.color = "white";
-  send.style.background = "rgba(255,255,255,.14)";
-  send.style.color = "white";
-  close.style.background = "rgba(255,255,255,.14)";
-  close.style.color = "white";
-
-  function line(txt){
-    const div=document.createElement("div");
-    div.className="c13b0-chatline";
-    div.textContent=txt;
-    body.appendChild(div);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function open(){ panel.style.display="block"; input.focus(); }
-  function shut(){ panel.style.display="none"; }
-
-  fab.addEventListener("click", open);
-  close.addEventListener("click", shut);
-  window.addEventListener("click",(e)=>{
-    if(panel.style.display==="block"){
-      // click outside closes
-      if(!panel.contains(e.target) && e.target!==fab) shut();
-    }
-  });
-
-  async function ask(){
-    const q=(input.value||"").trim();
-    if(!q) return;
-
-    line("> " + q);
-    input.value="";
-
-    // Router endpoint (you’ll create it in your router repo)
-    // expected response: { ok:true, repo:"x", answer:"...", token:{id:"...", value:"...", type:"..."} }
-    try{
-      const res = await fetch("/router/ask", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ repo, query:q, t: Date.now() })
-      });
-      const data = await res.json();
-      if(!data || !data.ok){
-        line("⚠️ Router error: " + (data && data.error ? data.error : "unknown"));
-        return;
-      }
-      if(data.answer) line(data.answer);
-      if(data.token){
-        line("🧱🟡🧱 TOKEN → " + JSON.stringify(data.token));
-      } else {
-        line("🧱📍🧱 no token returned");
-      }
-    }catch(err){
-      line("⚠️ fetch failed: " + err);
-    }
-  }
-
-  send.addEventListener("click", ask);
-  input.addEventListener("keydown",(e)=>{ if(e.key==="Enter") ask(); });
-})();
-</script>
-<!-- C13B0_CHAT_WIDGET_END -->
 </html>
-<!-- C13B0_TOKEN_BLOCK -->
-<style>
-.c13b0{font-family:monospace;background:#0b0f14;color:#e6edf3;padding:16px}
-.c13b0 .value{font-size:2em;color:#ffd700}
-.c13b0 button{padding:12px;font-size:1em;width:100%;margin-top:8px}
-</style>
-
-<div class="c13b0">
-  <h2>🧱🍄⭐ Token</h2>
-  <div class="value">Value: 41</div>
-  <p>🧱 Base • 🍄 Growth • ⭐ Star Power</p>
-
-  <h3>Support / Acquire</h3>
-  <p>This token represents real work, research, and structure.</p>
-
-  <a href="https://www.paypal.com/paypalme/watsonkris61@gmail.com/41" target="_blank">
-    <button>Pay $41 via PayPal</button>
-  </a>
-
-  <p style="font-size:0.8em;">
-    PayPal recipient: watsonkris61@gmail.com<br/>
-    Repo: Joe<br/>
-    Generated: 2025-12-20T15:41:06Z
-  </p>
-</div>
-<!-- C14_MARIO_PANEL_START -->
-<div style="font-family:monospace;background:#0b0f14;color:#e6edf3;padding:14px;margin:14px 0">
-  <div style="font-size:2.2em;color:#ffd700;text-align:center">
-    🧱🍄⭐ Token Value: 56
-  </div>
-  <p style="text-align:center">🧱 Base • 🍄 Growth • ⭐ Star Power</p>
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="get" target="_blank">
-    <input type="hidden" name="cmd" value="_xclick">
-    <input type="hidden" name="business" value="watsonkris61@gmail.com">
-    <input type="hidden" name="item_name" value="Joe Token">
-    <input type="hidden" name="amount" value="56">
-    <input type="hidden" name="currency_code" value="USD">
-    <button style="width:100%;padding:14px">Pay 10100VALUE via PayPal</button>
-  </form>
-</div>
-<!-- C14_MARIO_PANEL_END -->
-<!-- C14_TOKEN_PANEL_START -->
-<div style="font-family:monospace;background:#0b0f14;color:#e6edf3;padding:16px;margin:16px 0">
-  <div style="font-size:2.4em;color:#ffd700;text-align:center">
-    🧱🍄⭐ Token Value: 56
-  </div>
-
-  <p style="text-align:center">
-    🧱 Base &nbsp; 🍄 Growth &nbsp; ⭐ Star Power
-  </p>
-
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="get" target="_blank">
-    <input type="hidden" name="cmd" value="_xclick">
-    <input type="hidden" name="business" value="watsonkris61@gmail.com">
-    <input type="hidden" name="item_name" value="Joe Token">
-    <input type="hidden" name="amount" value="56">
-    <input type="hidden" name="currency_code" value="USD">
-    <button style="width:100%;padding:14px;font-size:1em">
-      Pay $56 via PayPal
-    </button>
-  </form>
-
-  <p style="font-size:0.75em;text-align:center;margin-top:10px">
-    Repository owner: pewpi-infinity<br/>
-    Contact: marvaseater@gmail.com<br/>
-    Settlement handled externally via PayPal
-  </p>
-</div>
-<!-- C14_TOKEN_PANEL_END -->
-
-
-<!-- INDEX_VALUE_START -->
-<div class="box">
-<h2>🧱 Index License Token</h2>
-<p><strong>Operator:</strong> Kris Watson</p>
-<p><strong>License Value (monotonic):</strong> $110 USD</p>
-<p><small>Value increases daily via Infinity Plus + Mongoose growth.</small></p>
-<form action="https://www.paypal.com/paypalme/marvaseater@gmail.com/110" method="get" target="_blank">
-  <button type="submit">Buy License Token</button>
-</form>
-<p><small>Token grants right to display/use/operate this index for business. No ownership transfer.</small></p>
-<p><small>Contact: 808-342-9974</small></p>
-</div>
-<!-- INDEX_VALUE_END -->
-
-<!-- C13B0:MAP_VIEWER -->
-<section>
-  <h3>🧱🔗🧱 Infinity Ecosystem</h3>
-  <select onchange="location=this.value">
-    <!-- populated by bots -->
-  </select>
-</section>
-
-<!-- C13B0:PAYPAL_BLOCK -->
-<section>
-  <h3>🧱💰🧱 Acquire Access License</h3>
-  <p>Starting price shown below. Value increases with growth.</p>
-  <button>Buy Now (PayPal)</button>
-</section>

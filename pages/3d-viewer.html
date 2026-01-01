@@ -1,6 +1,48 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>3D Viewer - Infinity Portal</title>
+  <link rel="stylesheet" href="../assets/css/infinity-design.css" />
+  <style>
+    :root{
+      --bg:#0c1420; --bg2:#0f1a2a; --card:#101e30; --edge:#14243a;
+      --text:#eaf1ff; --muted:#a7b6d9; --brand:#1f6fff; --chip:#2563eb;
+    }
+    body{background:linear-gradient(120deg,#06101f,#0e1b30 70%); color:var(--text);}
+    .chip{display:inline-block;background:linear-gradient(180deg,#2a54a3,#184285);padding:.35rem .6rem;border-radius:999px;font-size:.8rem}
+    .footer{opacity:.8;font-size:.85rem;margin-top:.6rem;text-align:center;}
+    .viewer-container{
+      height:400px;
+      display:grid;
+      place-items:center;
+      background:#0a1628;
+      border:1px solid #1b2c4b;
+      border-radius:12px;
+      perspective:800px;
+      margin-top:1rem;
+    }
+    #cube{
+      width:120px;
+      height:120px;
+      position:relative;
+      transform-style:preserve-3d;
+      animation:spin 7s linear infinite;
+    }
+    #cube div{
+      position:absolute;
+      inset:0;
+      background:#1f6fff11;
+      border:1px solid #2f66cc;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      font-size:48px;
+    }
+    @keyframes spin{
+      from{transform:rotateX(0) rotateY(0)}
+      to{transform:rotateX(360deg) rotateY(360deg)}
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
   <title>∞ 3D Viewer - Infinity Portal</title>
@@ -171,6 +213,43 @@
   </style>
 </head>
 <body>
+  <div class="header" style="background:linear-gradient(180deg,#091425,transparent);backdrop-filter:blur(8px);">
+    <div class="header-content">
+      <a href="../dashboard.html" class="logo">∞ INFINITY</a>
+      <div class="nav">
+        <a href="../pages/chat.html">Chat</a>
+        <a href="../pages/pi-singer.html">Pi Singer</a>
+        <a href="../pages/oscilloscope.html">Oscilloscope</a>
+        <a href="../pages/3d-viewer.html" class="active">3D Viewer</a>
+        <a href="../dashboard.html">Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="chip">Simple 3D Panel</div>
+      <div class="viewer-container">
+        <div id="cube">
+          <div style="transform:translateZ(60px);">∞</div>
+          <div style="transform:rotateY(90deg) translateZ(60px);">∞</div>
+          <div style="transform:rotateY(-90deg) translateZ(60px);">∞</div>
+          <div style="transform:rotateX(90deg) translateZ(60px);">∞</div>
+          <div style="transform:rotateX(-90deg) translateZ(60px);">∞</div>
+          <div style="transform:rotateY(180deg) translateZ(60px);">∞</div>
+        </div>
+      </div>
+      <div class="footer">Lightweight CSS-based 3D animation - no WebGL required, works offline.</div>
+    </div>
+  </div>
+
+  <script src="../assets/js/infinity-auth.js"></script>
+  <script>
+    // Check authentication
+    if (!InfinityAuth.requireAuth()) {
+      // Will redirect to login
+    }
+  </script>
 
 <div id="infinity-header-mount"></div>
 

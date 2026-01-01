@@ -1,6 +1,180 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Rogers AI Chat - Infinity Portal</title>
+  <link rel="stylesheet" href="../assets/css/infinity-design.css" />
+  <style>
+    :root{
+      --bg:#0c1420; --bg2:#0f1a2a; --card:#101e30; --edge:#14243a;
+      --text:#eaf1ff; --muted:#a7b6d9; --brand:#1f6fff; --chip:#2563eb;
+      --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+    }
+    body{background:linear-gradient(120deg,#06101f,#0e1b30 70%); color:var(--text);}
+    .chatbox{height:58vh;min-height:360px;background:#0a1628;border:1px solid #1b2c4b;border-radius:18px;padding:1rem;display:flex;flex-direction:column;overflow-y:auto;}
+    .bubble{max-width:78%;padding:.6rem .8rem;border-radius:14px;margin:.35rem 0}
+    .me{align-self:flex-end;background:#1971ff;color:white;border:1px solid #3385ff}
+    .bot{align-self:flex-start;background:#0f213e;border:1px solid #1f3e6f;color:#e7f0ff}
+    .inputrow{margin-top:1rem;display:flex;gap:.5rem}
+    .textin{flex:1;padding:.7rem .9rem;border-radius:12px;border:1px solid #294672;background:#0e1c33;color:#e7f0ff}
+    .toolbtn{width:42px;height:42px;display:grid;place-items:center;border-radius:10px;border:1px solid #294672;background:#0d1b31;color:#cfe1ff;cursor:pointer}
+    .chip{display:inline-block;background:linear-gradient(180deg,#2a54a3,#184285);padding:.35rem .6rem;border-radius:999px;font-size:.8rem}
+    .row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;justify-content:space-between;}
+    .footer{opacity:.8;font-size:.85rem;margin-top:.6rem;text-align:center;}
+  </style>
+</head>
+<body>
+  <div class="header" style="background:linear-gradient(180deg,#091425,transparent);backdrop-filter:blur(8px);">
+    <div class="header-content">
+      <a href="../dashboard.html" class="logo">∞ INFINITY</a>
+      <div class="nav">
+        <a href="../pages/chat.html" class="active">Chat</a>
+        <a href="../pages/pi-singer.html">Pi Singer</a>
+        <a href="../pages/oscilloscope.html">Oscilloscope</a>
+        <a href="../pages/3d-viewer.html">3D Viewer</a>
+        <a href="../dashboard.html">Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="row">
+        <div class="chip">Rogers AI — Mongoose OS Powered</div>
+        <div class="row" style="gap:.3rem">
+          <button class="toolbtn" title="Mic" onclick="startMic()">🎤</button>
+          <label class="toolbtn" title="Upload">
+            📎<input type="file" id="fileUp" style="display:none" onchange="handleFile(event)">
+          </label>
+          <button class="toolbtn" title="Read last" onclick="readLast()">🔊</button>
+        </div>
+      </div>
+      <div id="chatbox" class="chatbox">
+        <div class="bubble bot">Hey! Rogers AI is live, powered by Mongoose OS. Ask me anything!</div>
+      </div>
+      <div class="inputrow">
+        <input id="message" class="textin" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()" />
+        <button class="btn-primary" onclick="sendMsg()">Send</button>
+      </div>
+      <div class="footer">
+        <span id="mongoose-status" class="badge badge-success">Mongoose OS: Connected</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/infinity-auth.js"></script>
+  <script src="../mongoose/lib/mongoose-client.js"></script>
+  <script>
+    // Check authentication
+    if (!InfinityAuth.requireAuth()) {
+      // Will redirect to login
+    }
+
+    const box = document.getElementById('chatbox');
+    const input = document.getElementById('message');
+    let tokenCount = 0;
+
+    // Check Mongoose health on load
+    window.addEventListener('DOMContentLoaded', async () => {
+      const health = await window.MongooseClient.healthCheck();
+      const statusBadge = document.getElementById('mongoose-status');
+      if (health.healthy) {
+        statusBadge.textContent = `Mongoose OS: ${health.mode} mode`;
+        statusBadge.className = 'badge badge-success';
+      } else {
+        statusBadge.textContent = 'Mongoose OS: Offline';
+        statusBadge.className = 'badge badge-warning';
+      }
+    });
+
+    function addBubble(text, cls){ 
+      const b=document.createElement('div'); 
+      b.className='bubble '+cls; 
+      b.textContent=text; 
+      box.appendChild(b); 
+      box.scrollTop=box.scrollHeight; 
+      return b; 
+    }
+
+    async function sendMsg(){
+      const text = input.value.trim(); 
+      if(!text) return;
+      
+      addBubble(text,'me'); 
+      input.value='';
+      
+      // Show typing indicator
+      const typingBubble = addBubble('Thinking...', 'bot');
+      
+      try {
+        // Query Mongoose OS
+        const response = await window.MongooseClient.chat('Joe', text, {
+          page: 'chat',
+          user: InfinityAuth.getUserInfo()
+        });
+        
+        // Remove typing indicator
+        typingBubble.remove();
+        
+        if (response.ok) {
+          addBubble(response.answer, 'bot');
+          if (response.token) {
+            console.log('Token received:', response.token);
+          }
+        } else {
+          // Fallback to offline response
+          const fallback = window.MongooseClient.getOfflineFallback(text);
+          addBubble(fallback, 'bot');
+        }
+        
+        tokenCount += (text.length + 50);
+      } catch (error) {
+        typingBubble.remove();
+        addBubble('Error connecting to Mongoose OS. Please try again.', 'bot');
+      }
+      
+      // Optional TTS
+      if(localStorage.getItem('tts')==='1'){
+        const lastBot = [...document.querySelectorAll('.bubble.bot')].pop();
+        if (lastBot) {
+          speechSynthesis.speak(new SpeechSynthesisUtterance(lastBot.textContent));
+        }
+      }
+    }
+
+    function readLast(){
+      const bubbles=[...document.querySelectorAll('.bubble.bot')]; 
+      if(!bubbles.length) return;
+      speechSynthesis.speak(new SpeechSynthesisUtterance(bubbles[bubbles.length-1].textContent));
+    }
+
+    function startMic(){
+      try{
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition; 
+        const r = new SR();
+        r.lang='en-US'; 
+        r.interimResults=false; 
+        r.maxAlternatives=1; 
+        r.onresult=(e)=>{ 
+          input.value = e.results[0][0].transcript; 
+          sendMsg(); 
+        }; 
+        r.onerror=(e)=>{ 
+          addBubble("Mic error: "+e.error,'bot'); 
+        }; 
+        r.start();
+      }catch(e){ 
+        addBubble("Speech recognition not available in this browser.",'bot'); 
+      }
+    }
+
+    function handleFile(ev){ 
+      const f=ev.target.files[0]; 
+      if(!f) return; 
+      addBubble("Got file: "+f.name+" ("+f.size+" bytes). I can parse text files locally.",'bot'); 
+    }
+  </script>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
   <title>∞ Chat - Infinity Portal</title>
