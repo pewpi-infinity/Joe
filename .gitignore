@@ -5,3 +5,10 @@ __pycache__/
 server.log
 /tmp/
 *.pid
+node_modules/
+dist/
+build/
+.DS_Store
+*.swp
+*.swo
+*~

@@ -204,6 +204,101 @@
         width: auto;
       }
     }
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+      --ok: #22c55e;
+      --radius: 12px;
+      font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%); 
+      color: var(--text); 
+      min-height: 100vh;
+    }
+    .app { max-width: 640px; margin: 0 auto; padding: 0 0 60px 0; }
+    header { 
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 10px;
+      background: rgba(16, 30, 48, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--edge);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logoText { font-weight: 700; color: var(--text); font-size: 20px; letter-spacing: 1px; }
+    .sub { font-size: 13px; color: var(--muted); }
+    .user-badge { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      font-size: 14px; 
+      color: var(--text); 
+    }
+    .user-badge button { 
+      background: rgba(31, 111, 255, 0.2); 
+      border: 1px solid var(--brand); 
+      border-radius: 6px; 
+      padding: 4px 8px; 
+      cursor: pointer; 
+      font-size: 12px;
+      color: var(--text);
+    }
+    main { padding: 20px 10px 10px 10px; }
+    .card { 
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    }
+    .card h2 { margin: 0 0 8px 0; color: var(--text); }
+    .apps { display: flex; flex-direction: column; gap: 12px; }
+    .app-link { 
+      background: var(--bg2); 
+      border: 1px solid var(--edge);
+      border-radius: 10px; 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+      padding: 16px; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-start;
+      transition: all 0.2s;
+    }
+    .app-link:hover {
+      border-color: var(--brand);
+      transform: translateY(-2px);
+    }
+    .app-link a { 
+      color: var(--brand); 
+      font-weight: 700; 
+      font-size: 17px; 
+      text-decoration: none; 
+    }
+    .desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .live { color: var(--ok); font-weight: 700; font-size: 12px; }
+    .welcome-banner { 
+      background: linear-gradient(135deg, var(--brand), var(--chip)); 
+      color: #fff; 
+      padding: 16px; 
+      border-radius: 12px; 
+      margin-bottom: 18px; 
+    }
+    .welcome-banner h3 { margin: 0 0 4px 0; }
+    .welcome-banner p { margin: 0; font-size: 14px; opacity: 0.9; }
   </style>
 </head>
 <body>
@@ -239,24 +334,55 @@
             <a href="pages/pi-singer.html">Pi Singer</a>
             <div class="desc">Digit-to-music generator with live waveform</div>
             <span class="live">✓ ONLINE</span>
+        <h2>🎨 Infinity Portal - All Tools</h2>
+        <div class="sub" style="margin-bottom:13px;">Explore all features powered by Mongoose OS AI</div>
+        <div class="apps">
+          <div class="app-link">
+            <a href="pages/chat.html">💬 Rogers AI Chat</a>
+            <div class="desc">Conversational AI with Mongoose OS backend</div>
+            <span class="live">Token cost: 1 per query</span>
           </div>
           
           <div class="app-link">
             <a href="pages/oscilloscope.html">Oscilloscope</a>
             <div class="desc">Signal generator with frequency visualization</div>
             <span class="live">✓ ONLINE</span>
+            <a href="pages/pi-singer.html">🎵 Pi Singer</a>
+            <div class="desc">Musical π generator with live waveform</div>
+            <span class="live">Free to use</span>
           </div>
           
           <div class="app-link">
             <a href="pages/3d-viewer.html">3D Viewer</a>
             <div class="desc">Simple 3D panel with CSS animations</div>
             <span class="live">✓ ONLINE</span>
+            <a href="pages/oscilloscope.html">📈 Oscilloscope</a>
+            <div class="desc">Signal generator & visualizer</div>
+            <span class="live">Free to use</span>
           </div>
           
           <div class="app-link">
             <a href="portal.html">Classic Portal</a>
             <div class="desc">Legacy unified portal (standalone)</div>
             <span class="live">✓ ONLINE</span>
+            <a href="pages/3d-viewer.html">🧊 3D Viewer</a>
+            <div class="desc">CSS 3D animations and transformations</div>
+            <span class="live">Free to use</span>
+          </div>
+          <div class="app-link">
+            <a href="designer/index.html">🎨 Page Designer</a>
+            <div class="desc">Create and customize your own pages</div>
+            <span class="live">Requires tokens</span>
+          </div>
+          <div class="app-link">
+            <a href="admin/dashboard.html">👑 Admin Dashboard</a>
+            <div class="desc">System management & configuration</div>
+            <span class="live">Admin only</span>
+          </div>
+          <div class="app-link">
+            <a href="portal.html">🌐 Legacy Portal</a>
+            <div class="desc">Original all-in-one interface</div>
+            <span class="live">All features embedded</span>
           </div>
         </div>
       </div>
@@ -401,5 +527,80 @@
     // Initial greeting
     addBubble('ai', "Hi! Rogers AI is ready. Ask anything or say 'help'.");
   </script>
+        <h2>📊 Token Balance & Access</h2>
+        <div style="padding: 1rem; background: var(--bg2); border-radius: 12px;">
+          <div><b>🧱🍄⭐ Token Balance:</b> <span id="tokenBalance">0</span> tokens</div>
+          <div style="margin-top: 0.5rem;"><b>Designer Access:</b> <span id="designerAccess">—</span></div>
+          <div style="margin-top: 0.5rem;"><b>Role:</b> <span id="userRole">User</span></div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2>🔐 Session Information</h2>
+        <div style="padding: 1rem; background: var(--bg2); border-radius: 12px;">
+          <div><b>User ID:</b> <span id="userId">—</span></div>
+          <div style="margin-top: 0.5rem;"><b>Email:</b> <span id="userEmail">—</span></div>
+          <div style="margin-top: 0.5rem;"><b>Login Time:</b> <span id="loginTime">—</span></div>
+          <div style="margin-top: 0.5rem;"><b>Session Expires:</b> <span id="expiresAt">—</span></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script src="tokens/economy.js"></script>
+
+<script>
+// Check authentication on page load
+window.addEventListener('DOMContentLoaded', () => {
+  if (!window.InfinityAuth || !window.InfinityAuth.isAuthenticated()) {
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  initializeDashboard();
+});
+
+function initializeDashboard() {
+  const userInfo = window.InfinityAuth.getUserInfo();
+  const session = window.InfinityAuth.getSession();
+  
+  // Initialize token economy
+  const tokenEconomy = new TokenEconomy();
+  const stats = tokenEconomy.getStats();
+  
+  // Record page view
+  tokenEconomy.recordPageView('dashboard');
+  
+  if (userInfo) {
+    document.getElementById('userName').textContent = userInfo.username;
+    document.getElementById('userDisplay').textContent = userInfo.username;
+    document.getElementById('userId').textContent = userInfo.userId;
+    document.getElementById('userEmail').textContent = userInfo.email;
+    document.getElementById('userRole').textContent = userInfo.role || 'User';
+  }
+  
+  // Display token information
+  document.getElementById('tokenBalance').textContent = stats.userBalance;
+  document.getElementById('designerAccess').textContent = stats.hasDesignerAccess ? '✅ Granted' : '❌ Denied';
+  
+  if (session) {
+    const loginTime = new Date(session.loginTime);
+    const expiresAt = new Date(session.expiresAt);
+    
+    document.getElementById('loginTime').textContent = loginTime.toLocaleString();
+    document.getElementById('expiresAt').textContent = expiresAt.toLocaleString();
+  }
+}
+
+function logout() {
+  if (confirm('Are you sure you want to logout?')) {
+    window.InfinityAuth.logout();
+  }
+}
+</script>
+
+<!-- Load Mongoose Chat Widget -->
+<script src="chat/widget.js"></script>
+
 </body>
 </html>

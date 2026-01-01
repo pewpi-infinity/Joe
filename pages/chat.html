@@ -175,5 +175,261 @@
       addBubble("Got file: "+f.name+" ("+f.size+" bytes). I can parse text files locally.",'bot'); 
     }
   </script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+  <title>∞ Chat - Infinity Portal</title>
+  <style>
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      min-height: 100vh;
+    }
+    
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .card {
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 1rem;
+    }
+    
+    .chip {
+      display: inline-block;
+      background: linear-gradient(180deg, #2a54a3, #184285);
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .token-display {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    
+    .token-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffd700;
+    }
+    
+    .page-info {
+      background: rgba(31, 111, 255, 0.1);
+      border: 1px solid rgba(31, 111, 255, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .page-info h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--brand);
+    }
+    
+    .page-info p {
+      margin: 0.25rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .chatbox {
+      height: 58vh;
+      min-height: 360px;
+      background: #0a1628;
+      border: 1px solid #1b2c4b;
+      border-radius: 18px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .bubble {
+      max-width: 78%;
+      padding: 0.6rem 0.8rem;
+      border-radius: 14px;
+      margin: 0.35rem 0;
+    }
+    
+    .me {
+      align-self: flex-end;
+      background: #1971ff;
+      color: white;
+      border: 1px solid #3385ff;
+    }
+    
+    .bot {
+      align-self: flex-start;
+      background: #0f213e;
+      border: 1px solid #1f3e6f;
+      color: #e7f0ff;
+    }
+    
+    .inputrow {
+      margin-top: auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .textin {
+      flex: 1;
+      padding: 0.7rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid #294672;
+      background: #0e1c33;
+      color: #e7f0ff;
+    }
+    
+    .btn {
+      background: linear-gradient(180deg, #2a59b4, #1f49a0);
+      border: 1px solid #3764bf;
+      color: white;
+      border-radius: 14px;
+      padding: 0.6rem 0.9rem;
+      cursor: pointer;
+    }
+    
+    .toolbtn {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      border: 1px solid #294672;
+      background: #0d1b31;
+      color: #cfe1ff;
+      cursor: pointer;
+    }
+    
+    .row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+<div id="infinity-header-mount"></div>
+
+<main class="wrap">
+  <!-- Token Display -->
+  <div class="token-display">
+    <span>🧱🍄⭐</span>
+    <span class="token-value">Token Value: 42</span>
+    <span style="margin-left: auto; font-size: 0.8rem; color: var(--muted);">Cost per query: 1 token</span>
+  </div>
+  
+  <!-- Page Info -->
+  <div class="page-info">
+    <h3>💬 Rogers AI Chat Terminal</h3>
+    <p><strong>Purpose:</strong> Conversational AI interface with Mongoose OS backend</p>
+    <p><strong>Research Area:</strong> Natural language processing, token-based queries</p>
+    <p><strong>Building Status:</strong> Active development - Real-time AI responses</p>
+  </div>
+  
+  <!-- Chat Interface -->
+  <div class="card">
+    <div class="row">
+      <div class="chip">Rogers AI — Mongoose OS Backend</div>
+      <div class="row">
+        <button class="toolbtn" title="Mic" onclick="startMic()">🎤</button>
+        <label class="toolbtn" title="Upload">
+          📎<input type="file" id="fileUp" style="display:none" onchange="handleFile(event)">
+        </label>
+        <button class="toolbtn" title="Read last" onclick="readLast()">🔊</button>
+      </div>
+    </div>
+    <div id="chatbox" class="chatbox">
+      <div class="bubble bot">Hey there! I'm Rogers, powered by Mongoose OS AI. Ask me anything!</div>
+    </div>
+    <div class="inputrow">
+      <input id="message" class="textin" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="btn" onclick="sendMsg()">Send</button>
+    </div>
+  </div>
+</main>
+
+<script src="../pages/shared-header.js"></script>
+<script src="../chat/widget.js"></script>
+
+<script>
+// Local chat implementation (in addition to C13B0 widget)
+const chatbox = document.getElementById('chatbox');
+const msgInput = document.getElementById('message');
+
+function sendMsg() {
+  const text = msgInput.value.trim();
+  if (!text) return;
+  
+  const userBubble = document.createElement('div');
+  userBubble.className = 'bubble me';
+  userBubble.textContent = text;
+  chatbox.appendChild(userBubble);
+  msgInput.value = '';
+  
+  // Simulate response
+  setTimeout(() => {
+    const botBubble = document.createElement('div');
+    botBubble.className = 'bubble bot';
+    botBubble.textContent = 'I received your message: "' + text + '". For live AI responses, the Mongoose OS backend needs to be running.';
+    chatbox.appendChild(botBubble);
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }, 500);
+}
+
+function startMic() {
+  alert('Voice input feature coming soon!');
+}
+
+function handleFile(e) {
+  const file = e.target.files[0];
+  if (file) {
+    alert('File upload: ' + file.name + ' - Processing coming soon!');
+  }
+}
+
+function readLast() {
+  const bubbles = chatbox.querySelectorAll('.bubble.bot');
+  if (bubbles.length > 0) {
+    const lastBot = bubbles[bubbles.length - 1];
+    const utterance = new SpeechSynthesisUtterance(lastBot.textContent);
+    speechSynthesis.speak(utterance);
+  }
+}
+</script>
+
 </body>
 </html>

@@ -43,6 +43,172 @@
     @keyframes spin{
       from{transform:rotateX(0) rotateY(0)}
       to{transform:rotateX(360deg) rotateY(360deg)}
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+  <title>∞ 3D Viewer - Infinity Portal</title>
+  <style>
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      min-height: 100vh;
+    }
+    
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .card {
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 1rem;
+    }
+    
+    .chip {
+      display: inline-block;
+      background: linear-gradient(180deg, #2a54a3, #184285);
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .token-display {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    
+    .token-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffd700;
+    }
+    
+    .page-info {
+      background: rgba(31, 111, 255, 0.1);
+      border: 1px solid rgba(31, 111, 255, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .page-info h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--brand);
+    }
+    
+    .page-info p {
+      margin: 0.25rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      background: linear-gradient(180deg, #2a59b4, #1f49a0);
+      border: 1px solid #3764bf;
+      color: white;
+      border-radius: 14px;
+      padding: 0.6rem 0.9rem;
+      cursor: pointer;
+    }
+    
+    .viewer-3d {
+      width: 100%;
+      height: 400px;
+      background: #061326;
+      border: 1px solid #1a2c4d;
+      border-radius: 12px;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      overflow: hidden;
+    }
+    
+    .cube {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateCube 10s infinite linear;
+    }
+    
+    .cube-face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 2px solid rgba(31, 111, 255, 0.8);
+      background: rgba(31, 111, 255, 0.1);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .cube-face.front  { transform: rotateY(0deg) translateZ(100px); }
+    .cube-face.back   { transform: rotateY(180deg) translateZ(100px); }
+    .cube-face.right  { transform: rotateY(90deg) translateZ(100px); }
+    .cube-face.left   { transform: rotateY(-90deg) translateZ(100px); }
+    .cube-face.top    { transform: rotateX(90deg) translateZ(100px); }
+    .cube-face.bottom { transform: rotateX(-90deg) translateZ(100px); }
+    
+    @keyframes rotateCube {
+      from { transform: rotateX(0deg) rotateY(0deg); }
+      to { transform: rotateX(360deg) rotateY(360deg); }
+    }
+    
+    .cube.paused {
+      animation-play-state: paused;
+    }
+    
+    .footer {
+      opacity: 0.8;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
+    
+    input[type="range"] {
+      padding: 0.5rem;
+      width: 200px;
+    }
+    
+    label {
+      font-weight: 600;
     }
   </style>
 </head>
@@ -84,5 +250,114 @@
       // Will redirect to login
     }
   </script>
+
+<div id="infinity-header-mount"></div>
+
+<main class="wrap">
+  <!-- Token Display -->
+  <div class="token-display">
+    <span>🧱🍄⭐</span>
+    <span class="token-value">Token Value: 40</span>
+    <span style="margin-left: auto; font-size: 0.8rem; color: var(--muted);">3D rendering free</span>
+  </div>
+  
+  <!-- Page Info -->
+  <div class="page-info">
+    <h3>🧊 3D Viewer - CSS 3D Animations</h3>
+    <p><strong>Purpose:</strong> Demonstrate CSS-based 3D transformations and animations</p>
+    <p><strong>Research Area:</strong> CSS3 transforms, 3D perspectives, hardware-accelerated animations</p>
+    <p><strong>Building Status:</strong> Complete - Pure CSS 3D cube with interactive controls</p>
+  </div>
+  
+  <!-- 3D Viewer Interface -->
+  <div class="card">
+    <div class="chip">Simple 3D · CSS Transforms</div>
+    <div class="row">
+      <label>Speed:</label>
+      <input id="speedSlider" type="range" min="2" max="30" value="10"/>
+      <span id="speedVal">10s</span>
+      <button class="btn" onclick="toggleRotation()">⏯ Toggle</button>
+      <button class="btn" onclick="resetCube()">🔄 Reset</button>
+    </div>
+    <div class="viewer-3d">
+      <div class="cube" id="cube">
+        <div class="cube-face front">∞</div>
+        <div class="cube-face back">🧱</div>
+        <div class="cube-face right">🍄</div>
+        <div class="cube-face left">⭐</div>
+        <div class="cube-face top">🎨</div>
+        <div class="cube-face bottom">💎</div>
+      </div>
+    </div>
+    <div class="footer">Pure CSS 3D cube with hardware-accelerated transforms. No WebGL required.</div>
+  </div>
+</main>
+
+<script src="../pages/shared-header.js"></script>
+<script src="../chat/widget.js"></script>
+
+<script>
+// 3D Viewer Controls
+const cube = document.getElementById('cube');
+const speedSlider = document.getElementById('speedSlider');
+const speedVal = document.getElementById('speedVal');
+
+speedSlider.addEventListener('input', (e) => {
+  const speed = e.target.value;
+  speedVal.textContent = speed + 's';
+  cube.style.animationDuration = speed + 's';
+});
+
+function toggleRotation() {
+  cube.classList.toggle('paused');
+}
+
+function resetCube() {
+  cube.classList.remove('paused');
+  cube.style.animation = 'none';
+  setTimeout(() => {
+    cube.style.animation = '';
+  }, 10);
+}
+
+// Add mouse interaction
+let isDragging = false;
+let startX, startY;
+let currentRotateX = 0;
+let currentRotateY = 0;
+
+const viewer = document.querySelector('.viewer-3d');
+
+viewer.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
+  cube.classList.add('paused');
+});
+
+viewer.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  
+  const deltaX = e.clientX - startX;
+  const deltaY = e.clientY - startY;
+  
+  currentRotateY += deltaX * 0.5;
+  currentRotateX -= deltaY * 0.5;
+  
+  cube.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+  
+  startX = e.clientX;
+  startY = e.clientY;
+});
+
+viewer.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+
+viewer.addEventListener('mouseleave', () => {
+  isDragging = false;
+});
+</script>
+
 </body>
 </html>

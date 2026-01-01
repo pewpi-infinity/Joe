@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>∞ Admin Dashboard - Infinity Portal</title>
+  <style>
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      min-height: 100vh;
+    }
+    
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .card {
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 1rem;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 2rem;
+      background: linear-gradient(135deg, #1f6fff, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .admin-badge {
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ffd700, #ff8c00);
+      color: #000;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      padding: 1.5rem;
+      background: var(--bg2);
+      border: 1px solid var(--edge);
+      border-radius: 12px;
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--brand);
+    }
+    
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 968px) {
+      .grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(180deg, #2a59b4, #1f49a0);
+      border: 1px solid #3764bf;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-block;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(31, 111, 255, 0.3);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(180deg, #dc2626, #991b1b);
+      border-color: #dc2626;
+    }
+    
+    .btn-success {
+      background: linear-gradient(180deg, #22c55e, #16a34a);
+      border-color: #22c55e;
+    }
+    
+    .control-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .control-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .control-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--edge);
+      border-radius: 8px;
+      background: var(--bg2);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .table th {
+      text-align: left;
+      padding: 0.75rem;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--edge);
+      font-weight: 600;
+    }
+    
+    .table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--edge);
+    }
+    
+    .table tr:hover {
+      background: rgba(31, 111, 255, 0.05);
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .badge-ok {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--ok);
+    }
+    
+    .badge-warn {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--warn);
+    }
+    
+    .locked-message {
+      padding: 3rem;
+      text-align: center;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 12px;
+    }
+    
+    .locked-message h2 {
+      color: #ff6b6b;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div id="infinity-header-mount"></div>
+
+<main class="wrap">
+  <div id="adminContent">
+    <!-- Content loaded dynamically -->
+  </div>
+</main>
+
+<script src="../pages/shared-header.js"></script>
+<script src="../chat/widget.js"></script>
+<script src="../tokens/economy.js"></script>
+
+<script>
+// Admin Dashboard Implementation
+const tokenEconomy = new TokenEconomy();
+const isAdmin = tokenEconomy.isAdmin();
+const stats = tokenEconomy.getStats();
+
+const adminContent = document.getElementById('adminContent');
+
+if (isAdmin) {
+  renderAdminDashboard();
+} else {
+  renderAccessDenied();
+}
+
+function renderAccessDenied() {
+  adminContent.innerHTML = `
+    <div class="locked-message">
+      <h2>🚫 Admin Access Required</h2>
+      <p>This page is restricted to administrators only.</p>
+      <p>Please contact the system administrator if you need access.</p>
+      <button class="btn" onclick="window.location.href='../dashboard.html'">
+        Return to Dashboard
+      </button>
+    </div>
+  `;
+}
+
+function renderAdminDashboard() {
+  const pageValues = tokenEconomy.getAllPageValues();
+  const totalPages = Object.keys(pageValues).length;
+  const totalValue = Object.values(pageValues).reduce((sum, page) => sum + page.total, 0);
+  
+  adminContent.innerHTML = `
+    <div class="header">
+      <h1>👑 Admin Dashboard</h1>
+      <div class="admin-badge">
+        👑 Admin Mode Active
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" style="color: var(--brand);">${totalPages}</div>
+        <div class="stat-label">Total Pages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color: #ffd700;">${totalValue}</div>
+        <div class="stat-label">Total Token Value</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color: var(--ok);">${stats.totalInteractions}</div>
+        <div class="stat-label">Total Interactions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color: var(--warn);">${stats.userBalance}</div>
+        <div class="stat-label">User Token Balance</div>
+      </div>
+    </div>
+
+    <div class="grid-2col">
+      <!-- Page Management -->
+      <div class="card">
+        <div class="section-title">📄 Page Management</div>
+        <button class="btn btn-success" onclick="createNewPage()">
+          ➕ Create New Page
+        </button>
+        <button class="btn" onclick="window.location.href='../designer/index.html'">
+          🎨 Open Designer
+        </button>
+        <button class="btn" onclick="viewAllPages()">
+          📋 View All Pages
+        </button>
+        
+        <div style="margin-top: 2rem;">
+          <strong>Pages by Value:</strong>
+          <div id="pagesList" style="margin-top: 1rem;"></div>
+        </div>
+      </div>
+
+      <!-- User & Token Management -->
+      <div class="card">
+        <div class="section-title">👥 User & Token Management</div>
+        
+        <div class="control-group">
+          <label class="control-label">Add Tokens to User</label>
+          <input type="number" class="control-input" id="tokenAmount" value="100" min="1">
+        </div>
+        
+        <button class="btn btn-success" onclick="addTokens()">
+          💰 Add Tokens
+        </button>
+        <button class="btn" onclick="viewTokenHistory()">
+          📊 Token History
+        </button>
+        
+        <div style="margin-top: 2rem;">
+          <strong>Current User Balance:</strong> ${stats.userBalance} tokens<br>
+          <strong>Designer Access:</strong> ${stats.hasDesignerAccess ? '✅ Granted' : '❌ Denied'}
+        </div>
+      </div>
+    </div>
+
+    <!-- Mongoose Configuration -->
+    <div class="card">
+      <div class="section-title">🦎 Mongoose OS Configuration</div>
+      
+      <div class="grid-2col">
+        <div class="control-group">
+          <label class="control-label">AI Endpoint</label>
+          <input type="text" class="control-input" id="aiEndpoint" value="/router/ask">
+        </div>
+        
+        <div class="control-group">
+          <label class="control-label">Auth Endpoint</label>
+          <input type="text" class="control-input" id="authEndpoint" value="/router/auth">
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">Token Cost Per Query</label>
+        <input type="number" class="control-input" id="queryCost" value="1" min="1">
+      </div>
+      
+      <button class="btn btn-success" onclick="saveMongooseConfig()">
+        💾 Save Configuration
+      </button>
+      <button class="btn" onclick="testMongooseConnection()">
+        🔗 Test Connection
+      </button>
+    </div>
+
+    <!-- System Controls -->
+    <div class="card">
+      <div class="section-title">⚙️ System Controls</div>
+      
+      <button class="btn" onclick="exportSystemData()">
+        📤 Export All Data
+      </button>
+      <button class="btn" onclick="viewLogs()">
+        📋 View System Logs
+      </button>
+      <button class="btn btn-danger" onclick="resetSystem()">
+        ⚠️ Reset All Data
+      </button>
+    </div>
+  `;
+  
+  // Populate pages list
+  renderPagesList(pageValues);
+}
+
+function renderPagesList(pageValues) {
+  const container = document.getElementById('pagesList');
+  if (!container) return;
+  
+  const sorted = Object.entries(pageValues).sort((a, b) => b[1].total - a[1].total);
+  
+  if (sorted.length === 0) {
+    container.innerHTML = '<p style="color: var(--muted);">No pages yet</p>';
+    return;
+  }
+  
+  let html = '<table class="table"><thead><tr><th>Page</th><th>Value</th><th>Breakdown</th></tr></thead><tbody>';
+  
+  sorted.forEach(([name, value]) => {
+    html += `
+      <tr>
+        <td>${name}</td>
+        <td><strong>${value.total}</strong></td>
+        <td style="font-size: 0.85rem;">${value.emoji}</td>
+      </tr>
+    `;
+  });
+  
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+// Admin Actions
+function createNewPage() {
+  window.location.href = '../designer/index.html';
+}
+
+function viewAllPages() {
+  alert('All Pages:\n\n' + Object.keys(tokenEconomy.getAllPageValues()).join('\n') || 'No pages yet');
+}
+
+function addTokens() {
+  const amount = parseInt(document.getElementById('tokenAmount').value);
+  if (amount > 0) {
+    const newBalance = tokenEconomy.addUserTokens(amount);
+    alert(`✅ Added ${amount} tokens!\n\nNew balance: ${newBalance} tokens`);
+    renderAdminDashboard();
+  }
+}
+
+function viewTokenHistory() {
+  const usage = tokenEconomy.getTokenUsage();
+  if (usage.length === 0) {
+    alert('No token usage history yet.');
+  } else {
+    alert(`Token Usage History:\n\nTotal entries: ${usage.length}\nLast 5 entries:\n${JSON.stringify(usage.slice(-5), null, 2)}`);
+  }
+}
+
+function saveMongooseConfig() {
+  const config = {
+    aiEndpoint: document.getElementById('aiEndpoint').value,
+    authEndpoint: document.getElementById('authEndpoint').value,
+    queryCost: parseInt(document.getElementById('queryCost').value)
+  };
+  
+  localStorage.setItem('mongoose_admin_config', JSON.stringify(config));
+  alert('✅ Mongoose configuration saved!');
+}
+
+function testMongooseConnection() {
+  alert('Testing Mongoose OS connection...\n\nThis feature will test the API endpoints when the backend is running.');
+}
+
+function exportSystemData() {
+  const data = {
+    tokenEconomy: tokenEconomy.state,
+    mongoose: JSON.parse(localStorage.getItem('mongoose_admin_config') || '{}'),
+    pages: JSON.parse(localStorage.getItem('designer_pages') || '[]'),
+    timestamp: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `infinity-export-${Date.now()}.json`;
+  a.click();
+}
+
+function viewLogs() {
+  alert('System Logs:\n\nLog viewer coming soon!\nThis will show authentication, page access, and token transaction logs.');
+}
+
+function resetSystem() {
+  if (confirm('⚠️ WARNING: This will reset ALL system data!\n\nThis includes:\n- Token economy data\n- User balances\n- Page configurations\n- Mongoose settings\n\nAre you sure?')) {
+    if (confirm('This action cannot be undone. Continue?')) {
+      tokenEconomy.reset();
+      localStorage.removeItem('mongoose_admin_config');
+      localStorage.removeItem('designer_pages');
+      alert('✅ System has been reset!');
+      renderAdminDashboard();
+    }
+  }
+}
+</script>
+
+</body>
+</html>

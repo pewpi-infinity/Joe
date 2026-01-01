@@ -193,5 +193,299 @@
       if(el) el.addEventListener('input', e=>document.getElementById(id+'v').textContent=e.target.value); 
     });
   </script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+  <title>∞ Oscilloscope - Infinity Portal</title>
+  <style>
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      min-height: 100vh;
+    }
+    
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .card {
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 1rem;
+    }
+    
+    .chip {
+      display: inline-block;
+      background: linear-gradient(180deg, #2a54a3, #184285);
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .token-display {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    
+    .token-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffd700;
+    }
+    
+    .page-info {
+      background: rgba(31, 111, 255, 0.1);
+      border: 1px solid rgba(31, 111, 255, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .page-info h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--brand);
+    }
+    
+    .page-info p {
+      margin: 0.25rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      background: linear-gradient(180deg, #2a59b4, #1f49a0);
+      border: 1px solid #3764bf;
+      color: white;
+      border-radius: 14px;
+      padding: 0.6rem 0.9rem;
+      cursor: pointer;
+    }
+    
+    canvas {
+      width: 100%;
+      height: 300px;
+      background: #061326;
+      border: 1px solid #1a2c4d;
+      border-radius: 12px;
+      margin-top: 1rem;
+    }
+    
+    .footer {
+      opacity: 0.8;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
+    
+    input[type="number"], input[type="range"], select {
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--edge);
+      background: var(--bg2);
+      color: var(--text);
+    }
+    
+    label {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div id="infinity-header-mount"></div>
+
+<main class="wrap">
+  <!-- Token Display -->
+  <div class="token-display">
+    <span>🧱🍄⭐</span>
+    <span class="token-value">Token Value: 38</span>
+    <span style="margin-left: auto; font-size: 0.8rem; color: var(--muted);">Signal generation free</span>
+  </div>
+  
+  <!-- Page Info -->
+  <div class="page-info">
+    <h3>📈 Oscilloscope - Signal Generator & Visualizer</h3>
+    <p><strong>Purpose:</strong> Generate and visualize audio waveforms in real-time</p>
+    <p><strong>Research Area:</strong> Signal processing, frequency analysis, waveform synthesis</p>
+    <p><strong>Building Status:</strong> Complete - Multi-mode signal generator with live visualization</p>
+  </div>
+  
+  <!-- Oscilloscope Interface -->
+  <div class="card">
+    <div class="chip">Oscilloscope · Signal Generator</div>
+    <div class="row">
+      <label>Mode:</label>
+      <select id="modeSel">
+        <option value="single">Single Tone</option>
+        <option value="dual">Dual Tone</option>
+        <option value="chord">Chord (3 tones)</option>
+      </select>
+      <label>F1:</label>
+      <input id="f1" type="range" min="100" max="2000" value="440"/>
+      <span id="f1v">440</span>Hz
+      <label id="f2lbl">F2:</label>
+      <input id="f2" type="range" min="100" max="2000" value="554"/>
+      <span id="f2v">554</span>Hz
+      <label id="f3lbl" style="display:none">F3:</label>
+      <input id="f3" type="range" min="100" max="2000" value="659" style="display:none"/>
+      <span id="f3v" style="display:none">659</span>Hz
+      <button class="btn" onclick="playSig()">Play</button>
+      <button class="btn" onclick="stopSig()">Stop</button>
+    </div>
+    <canvas id="scopeCanvas"></canvas>
+    <div class="footer">Real-time frequency visualization with multi-tone support.</div>
+  </div>
+</main>
+
+<script src="../pages/shared-header.js"></script>
+<script src="../chat/widget.js"></script>
+
+<script>
+// Oscilloscope Implementation
+let sigCtx, sigOscs = [], sigGain, sigAnalyser, sigAnim;
+
+function playSig() {
+  stopSig();
+  const mode = document.getElementById('modeSel').value;
+  const f1 = parseFloat(document.getElementById('f1').value);
+  const f2 = parseFloat(document.getElementById('f2').value);
+  const f3 = parseFloat(document.getElementById('f3').value);
+
+  sigCtx = new (window.AudioContext || window.webkitAudioContext)();
+  sigAnalyser = sigCtx.createAnalyser();
+  sigAnalyser.fftSize = 2048;
+  sigGain = sigCtx.createGain();
+  sigGain.gain.value = 0.2;
+
+  const freqs = mode === 'single' ? [f1] : mode === 'dual' ? [f1, f2] : [f1, f2, f3];
+  
+  freqs.forEach(freq => {
+    const osc = sigCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    osc.connect(sigGain);
+    osc.start();
+    sigOscs.push(osc);
+  });
+
+  sigGain.connect(sigAnalyser);
+  sigAnalyser.connect(sigCtx.destination);
+
+  const canvas = document.getElementById('scopeCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  function drawScope() {
+    sigAnim = requestAnimationFrame(drawScope);
+    const bufferLength = sigAnalyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    sigAnalyser.getByteTimeDomainData(dataArray);
+
+    ctx.fillStyle = '#061326';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#1f6fff';
+    ctx.beginPath();
+
+    const sliceWidth = canvas.width / bufferLength;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128.0;
+      const y = v * canvas.height / 2;
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+
+      x += sliceWidth;
+    }
+
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
+  }
+
+  drawScope();
+}
+
+function stopSig() {
+  sigOscs.forEach(osc => {
+    try { osc.stop(); } catch(e) {}
+  });
+  sigOscs = [];
+  if (sigAnim) {
+    cancelAnimationFrame(sigAnim);
+    sigAnim = null;
+  }
+  if (sigCtx) {
+    sigCtx.close();
+    sigCtx = null;
+  }
+}
+
+// Mode UI dynamics
+const modeSel = document.getElementById('modeSel');
+const f2 = document.getElementById('f2');
+const f2v = document.getElementById('f2v');
+const f2lbl = document.getElementById('f2lbl');
+const f3 = document.getElementById('f3');
+const f3v = document.getElementById('f3v');
+const f3lbl = document.getElementById('f3lbl');
+
+function refreshMode() {
+  const m = modeSel.value;
+  [f2, f2v, f2lbl].forEach(el => el.style.display = (m === 'single') ? 'none' : 'inline');
+  [f3, f3v, f3lbl].forEach(el => el.style.display = (m === 'chord') ? 'inline' : 'none');
+}
+
+modeSel.addEventListener('change', refreshMode);
+refreshMode();
+
+['f1', 'f2', 'f3'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', e => {
+      document.getElementById(id + 'v').textContent = e.target.value;
+    });
+  }
+});
+</script>
+
 </body>
 </html>

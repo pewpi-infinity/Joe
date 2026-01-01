@@ -8,6 +8,27 @@
   <link rel="stylesheet" href="assets/css/infinity-design.css" />
   <style>
     html, body { 
+    :root {
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+      --ok: #22c55e;
+      --radius: 12px;
+      --gradient: linear-gradient(135deg, #1f6fff, #2563eb);
+      font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text); 
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -29,6 +50,9 @@
       color: var(--blue-1);
       font-size: 48px;
       letter-spacing: 3px;
+      color: var(--text);
+      font-size: 36px;
+      letter-spacing: 2px;
       margin: 0;
       background: var(--gradient);
       -webkit-background-clip: text;
@@ -43,9 +67,17 @@
       letter-spacing: 0.5px;
     }
     
+    .login-card {
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    }
+    
     .login-card h2 {
       margin: 0 0 8px 0;
-      color: var(--blue-1);
+      color: var(--text);
       font-size: 24px;
       font-weight: 700;
     }
@@ -63,9 +95,52 @@
     .form-group label {
       display: block;
       font-weight: 600;
-      color: var(--blue-1);
+      color: var(--text);
       margin-bottom: 8px;
       font-size: 14px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--edge);
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.2s;
+      box-sizing: border-box;
+      background: var(--bg2);
+      color: var(--text);
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(31, 111, 255, 0.2);
+    }
+    
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(11, 95, 215, 0.2);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(31, 111, 255, 0.4);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
     
     .encryption-badge {
@@ -75,11 +150,11 @@
       gap: 8px;
       margin-top: 20px;
       padding: 12px;
-      background: rgba(34, 197, 94, 0.08);
-      border: 1px solid rgba(34, 197, 94, 0.2);
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.25);
       border-radius: 8px;
       font-size: 13px;
-      color: #15803d;
+      color: var(--ok);
     }
     
     .encryption-badge::before {
@@ -104,6 +179,23 @@
     .mongoose-badge::before {
       content: "🐍";
       font-size: 16px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+    
+    .status-message.success {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--ok);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      display: block;
+    }
+    
+    .status-message.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ff6b6b;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      display: block;
     }
     
     .divider {
@@ -119,12 +211,12 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: #e6e9ef;
+      background: var(--edge);
     }
     
     .divider span {
       position: relative;
-      background: var(--panel);
+      background: var(--card);
       padding: 0 12px;
       color: var(--muted);
       font-size: 13px;
@@ -138,7 +230,7 @@
     .toggle-mode button {
       background: none;
       border: none;
-      color: var(--blue-2);
+      color: var(--brand);
       font-weight: 600;
       cursor: pointer;
       text-decoration: underline;
@@ -148,15 +240,15 @@
     .info-box {
       margin-top: 24px;
       padding: 16px;
-      background: rgba(11, 95, 215, 0.05);
-      border: 1px solid rgba(11, 95, 215, 0.1);
+      background: rgba(31, 111, 255, 0.08);
+      border: 1px solid rgba(31, 111, 255, 0.15);
       border-radius: 8px;
       font-size: 13px;
       color: var(--muted);
     }
     
     .info-box strong {
-      color: var(--blue-1);
+      color: var(--text);
     }
     
     @media (max-width: 600px) {
@@ -171,6 +263,8 @@
     <div class="logo-header">
       <h1 class="logo-text">∞</h1>
       <p class="logo-subtitle">Infinity AI Platform</p>
+      <h1 class="logo-text">INFINITY</h1>
+      <p class="logo-subtitle">Mongoose OS AI · Encrypted Authentication</p>
     </div>
     
     <div class="card login-card">
@@ -324,9 +418,246 @@
       }
     }
     
+    async function handleSignup(email, username, passphrase) {
+      // Generate and store salt for key derivation
+      const salt = generateSalt();
+      localStorage.setItem(STORAGE_KEYS.ENCRYPTION_SALT, salt);
+      
+      // Generate encryption key from passphrase and salt
+      const encryptionKey = await deriveKey(passphrase, salt);
+      
+      // Create user data object
+      const userData = {
+        email: email,
+        username: username,
+        createdAt: new Date().toISOString(),
+        userId: generateUserId(),
+        role: 'user',
+        settings: {
+          theme: 'auto',
+          notifications: true
+        }
+      };
+      
+      // Encrypt and store user data
+      const encryptedData = await encryptData(JSON.stringify(userData), encryptionKey);
+      localStorage.setItem(STORAGE_KEYS.USER_DATA, encryptedData);
+      
+      // Create session
+      await createSession(userData);
+      
+      // Sync with Mongoose OS backend
+      await syncWithMongoose(userData);
+      
+      showStatus('Account created successfully! Redirecting...', 'success');
+      setTimeout(() => redirectToApp(), 1500);
+    }
+    
+    async function handleLogin(email, username, passphrase) {
+      // Check if user exists
+      const encryptedData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
+      const salt = localStorage.getItem(STORAGE_KEYS.ENCRYPTION_SALT);
+      
+      if (!encryptedData || !salt) {
+        showStatus('No account found. Please create an account first.', 'error');
+        setTimeout(() => {
+          isSignupMode = true;
+          toggleAuthMode();
+        }, 1500);
+        return;
+      }
+      
+      try {
+        // Derive key from passphrase and stored salt
+        const encryptionKey = await deriveKey(passphrase, salt);
+        
+        // Decrypt user data
+        const decryptedData = await decryptData(encryptedData, encryptionKey);
+        const userData = JSON.parse(decryptedData);
+        
+        // Verify email matches
+        if (userData.email !== email) {
+          showStatus('Invalid credentials', 'error');
+          return;
+        }
+        
+        // Create session
+        await createSession(userData);
+        
+        // Sync with Mongoose OS backend
+        await syncWithMongoose(userData);
+        
+        showStatus('Login successful! Redirecting...', 'success');
+        setTimeout(() => redirectToApp(), 1500);
+      } catch (error) {
+        showStatus('Invalid credentials or passphrase', 'error');
+        throw error;
+      }
+    }
+    
+    async function deriveKey(passphrase, salt) {
+      // Import passphrase as key material
+      const encoder = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        encoder.encode(passphrase),
+        'PBKDF2',
+        false,
+        ['deriveBits', 'deriveKey']
+      );
+      
+      // Derive AES-GCM key
+      const key = await crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: encoder.encode(salt),
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+      
+      return key;
+    }
+    
+    async function encryptData(data, key) {
+      const encoder = new TextEncoder();
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      
+      const encryptedContent = await crypto.subtle.encrypt(
+        {
+          name: 'AES-GCM',
+          iv: iv
+        },
+        key,
+        encoder.encode(data)
+      );
+      
+      // Combine IV and encrypted content
+      const encryptedArray = new Uint8Array(iv.length + encryptedContent.byteLength);
+      encryptedArray.set(iv, 0);
+      encryptedArray.set(new Uint8Array(encryptedContent), iv.length);
+      
+      // Convert to base64 for storage
+      return btoa(String.fromCharCode(...encryptedArray));
+    }
+    
+    async function decryptData(encryptedBase64, key) {
+      // Decode from base64
+      const encryptedArray = new Uint8Array(
+        atob(encryptedBase64).split('').map(char => char.charCodeAt(0))
+      );
+      
+      // Extract IV and encrypted content
+      const iv = encryptedArray.slice(0, 12);
+      const encryptedContent = encryptedArray.slice(12);
+      
+      const decryptedContent = await crypto.subtle.decrypt(
+        {
+          name: 'AES-GCM',
+          iv: iv
+        },
+        key,
+        encryptedContent
+      );
+      
+      const decoder = new TextDecoder();
+      return decoder.decode(decryptedContent);
+    }
+    
+    async function createSession(userData) {
+      // Create session data
+      const sessionData = {
+        userId: userData.userId,
+        email: userData.email,
+        username: userData.username,
+        role: userData.role,
+        loginTime: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours
+        settings: userData.settings
+      };
+      
+      // Store in sessionStorage for current session
+      sessionStorage.setItem(STORAGE_KEYS.USER_SESSION, JSON.stringify(sessionData));
+      
+      // Generate auth token
+      const authToken = await generateAuthToken(userData);
+      sessionStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, authToken);
+      
+      // Also store minimal data in localStorage for persistence
+      localStorage.setItem('infinity_user', JSON.stringify({
+        email: userData.email,
+        username: userData.username,
+        lastLogin: new Date().toISOString()
+      }));
+    }
+    
     function checkExistingSession() {
       if (InfinityAuth.isAuthenticated()) {
         redirectToApp();
+      }
+    }
+    
+    async function generateAuthToken(userData) {
+      const tokenData = {
+        userId: userData.userId,
+        email: userData.email,
+        timestamp: Date.now(),
+        random: Math.random().toString(36)
+      };
+      
+      const encoder = new TextEncoder();
+      const data = encoder.encode(JSON.stringify(tokenData));
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      
+      return hashHex;
+    }
+    
+    function generateUserId() {
+      return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    function generateSalt() {
+      return Array.from(crypto.getRandomValues(new Uint8Array(16)))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+    
+    async function syncWithMongoose(userData) {
+      // Sync user authentication with Mongoose OS backend
+      try {
+        const mongooseConfig = {
+          endpoints: {
+            auth: '/router/auth'
+          }
+        };
+        
+        const response = await fetch(mongooseConfig.endpoints.auth, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userId: userData.userId,
+            email: userData.email,
+            username: userData.username,
+            timestamp: Date.now()
+          })
+        });
+        
+        // Don't block login if Mongoose is unavailable
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Synced with Mongoose OS:', data);
+        }
+      } catch (error) {
+        // Mongoose OS backend may not be running, continue anyway
+        console.warn('Mongoose OS sync unavailable:', error.message);
       }
     }
     
