@@ -175,8 +175,12 @@
     line("⏳ Querying Mongoose OS...", 'system');
 
     try{
+      // Auto-detect router endpoint
+      const port = window.location.port === '8080' ? '5001' : (window.location.port || '5001');
+      const routerUrl = `http://127.0.0.1:${port}/router/ask`;
+      
       // Use /router/ask endpoint
-      const res = await fetch("/router/ask", {
+      const res = await fetch(routerUrl, {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify({ repo, query:q, t: Date.now() })

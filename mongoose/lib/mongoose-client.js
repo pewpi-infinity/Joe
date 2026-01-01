@@ -3,8 +3,13 @@
 
 class MongooseClient {
   constructor(config = {}) {
+    // Auto-detect port from environment or use default
+    const defaultPort = window.location.port === '8080' ? '5001' : window.location.port || '5001';
+    const baseUrl = config.baseUrl || `http://127.0.0.1:${defaultPort}`;
+    
     this.config = {
-      endpoint: config.endpoint || '/mongoose/api',
+      endpoint: config.endpoint || `${baseUrl}/mongoose/api`,
+      routerEndpoint: config.routerEndpoint || `${baseUrl}/router`,
       mode: config.mode || 'passive',
       operator: config.operator || 'Unknown',
       ...config
