@@ -1,1 +1,23 @@
-{"operator":"Kris Watson","attached":"2025-12-25T08:20:58Z","mode":"passive"}
+{
+  "operator": "Kris Watson",
+  "attached": "2025-12-25T08:20:58Z",
+  "mode": "active",
+  "endpoints": {
+    "ask": "/router/ask",
+    "auth": "/router/auth"
+  },
+  "tokenSystem": {
+    "enabled": true,
+    "costPerQuery": 1,
+    "economy": {
+      "base": "🧱",
+      "growth": "🍄",
+      "acceleration": "⭐"
+    }
+  },
+  "integrations": {
+    "login": true,
+    "chat": true,
+    "designer": true
+  }
+}
