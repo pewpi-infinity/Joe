@@ -39,25 +39,29 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>∞ Joe</title>
+  <title>∞ Infinity Login</title>
   <meta name="color-scheme" content="light dark"/>
   <style>
     :root {
-      --blue-1: #003087;
-      --blue-2: #0b5fd7;
-      --bg: #fff;
-      --panel: #f8fafc;
-      --muted: #637083;
+      --bg: #0c1420;
+      --bg2: #0f1a2a;
+      --card: #101e30;
+      --edge: #14243a;
+      --text: #eaf1ff;
+      --muted: #a7b6d9;
+      --brand: #1f6fff;
+      --chip: #2563eb;
+      --ok: #22c55e;
       --radius: 12px;
-      --gradient: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      --gradient: linear-gradient(135deg, #1f6fff, #2563eb);
       font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
     }
     
     html, body { 
       margin: 0; 
       padding: 0; 
-      background: var(--bg); 
-      color: #051426; 
+      background: linear-gradient(120deg, #06101f, #0e1b30 70%);
+      color: var(--text); 
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -77,7 +81,7 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     
     .logo-text {
       font-weight: 800;
-      color: var(--blue-1);
+      color: var(--text);
       font-size: 36px;
       letter-spacing: 2px;
       margin: 0;
@@ -95,16 +99,16 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     }
     
     .login-card {
-      background: var(--panel);
-      border-radius: 16px;
+      background: radial-gradient(1200px 400px at 50% -100%, rgba(37, 99, 235, 0.4), transparent 60%), var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
       padding: 32px;
-      box-shadow: 0 8px 32px rgba(0, 48, 135, 0.12);
-      border: 1px solid rgba(0, 48, 135, 0.08);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
     }
     
     .login-card h2 {
       margin: 0 0 8px 0;
-      color: var(--blue-1);
+      color: var(--text);
       font-size: 24px;
       font-weight: 700;
     }
@@ -122,7 +126,7 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     .form-group label {
       display: block;
       font-weight: 600;
-      color: var(--blue-1);
+      color: var(--text);
       margin-bottom: 8px;
       font-size: 14px;
     }
@@ -130,17 +134,19 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     .form-group input {
       width: 100%;
       padding: 12px 16px;
-      border: 1.5px solid #e6e9ef;
+      border: 1px solid var(--edge);
       border-radius: 10px;
       font-size: 16px;
       transition: all 0.2s;
       box-sizing: border-box;
+      background: var(--bg2);
+      color: var(--text);
     }
     
     .form-group input:focus {
       outline: none;
-      border-color: var(--blue-2);
-      box-shadow: 0 0 0 3px rgba(11, 95, 215, 0.1);
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(31, 111, 255, 0.2);
     }
     
     .btn-primary {
@@ -159,7 +165,7 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(11, 95, 215, 0.3);
+      box-shadow: 0 6px 20px rgba(31, 111, 255, 0.4);
     }
     
     .btn-primary:disabled {
@@ -175,11 +181,11 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       gap: 8px;
       margin-top: 20px;
       padding: 12px;
-      background: rgba(34, 197, 94, 0.08);
-      border: 1px solid rgba(34, 197, 94, 0.2);
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.25);
       border-radius: 8px;
       font-size: 13px;
-      color: #15803d;
+      color: var(--ok);
     }
     
     .encryption-badge::before {
@@ -197,16 +203,16 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     }
     
     .status-message.success {
-      background: rgba(34, 197, 94, 0.1);
-      color: #15803d;
-      border: 1px solid rgba(34, 197, 94, 0.2);
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--ok);
+      border: 1px solid rgba(34, 197, 94, 0.3);
       display: block;
     }
     
     .status-message.error {
-      background: rgba(239, 68, 68, 0.1);
-      color: #991b1b;
-      border: 1px solid rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.15);
+      color: #ff6b6b;
+      border: 1px solid rgba(239, 68, 68, 0.3);
       display: block;
     }
     
@@ -223,12 +229,12 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       left: 0;
       right: 0;
       height: 1px;
-      background: #e6e9ef;
+      background: var(--edge);
     }
     
     .divider span {
       position: relative;
-      background: var(--panel);
+      background: var(--card);
       padding: 0 12px;
       color: var(--muted);
       font-size: 13px;
@@ -242,7 +248,7 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     .toggle-mode button {
       background: none;
       border: none;
-      color: var(--blue-2);
+      color: var(--brand);
       font-weight: 600;
       cursor: pointer;
       text-decoration: underline;
@@ -252,15 +258,15 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
     .info-box {
       margin-top: 24px;
       padding: 16px;
-      background: rgba(11, 95, 215, 0.05);
-      border: 1px solid rgba(11, 95, 215, 0.1);
+      background: rgba(31, 111, 255, 0.08);
+      border: 1px solid rgba(31, 111, 255, 0.15);
       border-radius: 8px;
       font-size: 13px;
       color: var(--muted);
     }
     
     .info-box strong {
-      color: var(--blue-1);
+      color: var(--text);
     }
     
     @media (max-width: 600px) {
@@ -323,7 +329,7 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
   <div class="login-container">
     <div class="logo-header">
       <h1 class="logo-text">INFINITY</h1>
-      <p class="logo-subtitle">AI-to-AI Encrypted Authentication</p>
+      <p class="logo-subtitle">Mongoose OS AI · Encrypted Authentication</p>
     </div>
     
     <div class="login-card">
@@ -466,6 +472,9 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       // Create session
       await createSession(userData);
       
+      // Sync with Mongoose OS backend
+      await syncWithMongoose(userData);
+      
       showStatus('Account created successfully! Redirecting...', 'success');
       setTimeout(() => redirectToApp(), 1500);
     }
@@ -500,6 +509,9 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
         
         // Create session
         await createSession(userData);
+        
+        // Sync with Mongoose OS backend
+        await syncWithMongoose(userData);
         
         showStatus('Login successful! Redirecting...', 'success');
         setTimeout(() => redirectToApp(), 1500);
@@ -655,6 +667,39 @@ body:not(.pewpi-live)>*:not(#pewpi-gate){filter:blur(6px);pointer-events:none}
       return Array.from(crypto.getRandomValues(new Uint8Array(16)))
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
+    }
+    
+    async function syncWithMongoose(userData) {
+      // Sync user authentication with Mongoose OS backend
+      try {
+        const mongooseConfig = {
+          endpoints: {
+            auth: '/router/auth'
+          }
+        };
+        
+        const response = await fetch(mongooseConfig.endpoints.auth, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userId: userData.userId,
+            email: userData.email,
+            username: userData.username,
+            timestamp: Date.now()
+          })
+        });
+        
+        // Don't block login if Mongoose is unavailable
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Synced with Mongoose OS:', data);
+        }
+      } catch (error) {
+        // Mongoose OS backend may not be running, continue anyway
+        console.warn('Mongoose OS sync unavailable:', error.message);
+      }
     }
     
     function showStatus(message, type) {
